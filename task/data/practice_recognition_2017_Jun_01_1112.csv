@@ -1,0 +1,5 @@
+Category,FixISI,ConList,CB,ConLabel,ImageFile,EmotionType,RunID,ConID,BlockRep,ID,TrialType,trials.thisRepN,trials.thisTrialN,trials.thisN,trials.thisIndex,response_itemrec.keys,response_itemrec.rt,response_sourcerec.keys,response_sourcerec.rt,response_sourceconf.keys,response_sourceconf.rt,date,frameRate,expName,participant,condition,
+dog,4.855,1,A,within SF?,PracticeStim/dog2.jpg,None,1,A,1,dog2,Old,0,0,0,0,v,1.7511370182,b,0.668370008469,v,0.56929397583,2017_Jun_01_1112,60.0027180949,recognition,practice,A,
+cat,0.589,1,A,within SF?,PracticeStim/cat1.jpg,None,1,A,1,cat1,New,0,1,1,1,v,0.23486995697,b,0.384477853775,v,0.684338092804,2017_Jun_01_1112,60.0027180949,recognition,practice,A,
+catdog,1.755,4,A,prof photog?,PracticeStim/catdog.jpg,None,1,D,1,catdog,Old,0,2,2,2,n,0.433643817902,b,0.601203918457,v,0.51945400238,2017_Jun_01_1112,60.0027180949,recognition,practice,A,
+dog,3.218,4,A,prof photog?,PracticeStim/dog1.jpg,None,1,D,1,dog1,Old,0,3,3,3,v,0.200930833817,b,0.484016895294,v,0.467078208923,2017_Jun_01_1112,60.0027180949,recognition,practice,A,

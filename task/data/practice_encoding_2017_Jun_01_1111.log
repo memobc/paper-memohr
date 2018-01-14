@@ -1,0 +1,139 @@
+10.4456 	EXP 	Created window1 = Window(allowGUI=False, allowStencil=False, autoLog=True, bitsMode=UNKNOWN, blendMode='avg', color=array([ 0.,  0.,  0.]), colorSpace='rgb', fullscr=UNKNOWN, gamma=None, lms=UNKNOWN, monitor=<psychopy.monitors.calibTools.Monitor object at 0x111a1be50>, multiSample=False, name='window1', numSamples=2, pos=[0, 0], screen=0, size=array([2560, 1440]), stereo=False, units='norm', useFBO=True, useRetina=False, viewOri=0.0, viewPos=None, viewScale=None, waitBlanking=True, winType='pyglet')
+10.4457 	EXP 	window1: recordFrameIntervals = False
+10.6117 	EXP 	window1: recordFrameIntervals = True
+10.7957 	EXP 	window1: recordFrameIntervals = False
+11.0494 	EXP 	Created instrux = TextStim(alignHoriz='center', alignVert='center', antialias=True, autoLog=True, bold=False, color='white', colorSpace='named', contrast=1.0, depth=0.0, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=0.1, italic=False, name='instrux', opacity=1.0, ori=0, pos=array([ 0.,  0.]), rgb=array([ 255.,  255.,  255.]), text=unicode(...), units='norm', win=Window(...), wrapWidth=1)
+11.0518 	EXP 	Created prescanFixation = TextStim(alignHoriz='center', alignVert='center', antialias=True, autoLog=True, bold=False, color='white', colorSpace='named', contrast=1.0, depth=0.0, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=0.1, italic=False, name='prescanFixation', opacity=1.0, ori=0, pos=array([ 0.,  0.]), rgb=array([ 255.,  255.,  255.]), text=u'+', units='norm', win=Window(...), wrapWidth=1)
+11.0568 	EXP 	Created blockInstrux = TextStim(alignHoriz='center', alignVert='center', antialias=True, autoLog=True, bold=False, color='white', colorSpace='named', contrast=1.0, depth=0.0, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=0.1, italic=False, name='blockInstrux', opacity=1.0, ori=0, pos=array([ 0.,  0.]), rgb=array([ 255.,  255.,  255.]), text=u'default text', units='norm', win=Window(...), wrapWidth=1)
+11.0955 	EXP 	Created image = ImageStim(autoLog=True, color=array([ 1.,  1.,  1.]), colorSpace='rgb', contrast=1.0, depth=-1.0, flipHoriz=False, flipVert=False, image='sin', interpolate=True, mask=None, maskParams=None, name='image', opacity=1.0, ori=0.0, pos=array([ 0.,  0.]), size=array([ 1200.,   900.]), texRes=128, units='pix', win=Window(...))
+11.1036 	EXP 	Created scale = TextStim(alignHoriz='center', alignVert='center', antialias=True, autoLog=True, bold=False, color='white', colorSpace='named', contrast=1.0, depth=-2.0, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=0.08, italic=False, name='scale', opacity=1.0, ori=0, pos=array([ 0. , -0.9]), rgb=array([ 255.,  255.,  255.]), text=u'least -- 1 -- 2 -- 3 -- 4 -- most', units='norm', win=Window(...), wrapWidth=1600)
+11.1055 	EXP 	Created fixISI_1 = TextStim(alignHoriz='center', alignVert='center', antialias=True, autoLog=True, bold=False, color='white', colorSpace='named', contrast=1.0, depth=-4.0, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=0.1, italic=False, name='fixISI_1', opacity=1.0, ori=0, pos=array([ 0.,  0.]), rgb=array([ 255.,  255.,  255.]), text=u'+', units='norm', win=Window(...), wrapWidth=1)
+11.1094 	EXP 	Created scaleLabel = TextStim(alignHoriz='center', alignVert='center', antialias=True, autoLog=True, bold=False, color='white', colorSpace='named', contrast=1.0, depth=-5.0, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=0.1, italic=False, name='scaleLabel', opacity=1.0, ori=0, pos=array([ 0. , -0.8]), rgb=array([ 255.,  255.,  255.]), text=u'default text', units='norm', win=Window(...), wrapWidth=1)
+11.1111 	EXP 	Created fixISI_after = TextStim(alignHoriz='center', alignVert='center', antialias=True, autoLog=True, bold=False, color='white', colorSpace='named', contrast=1.0, depth=-6.0, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=0.1, italic=False, name='fixISI_after', opacity=1.0, ori=0, pos=array([ 0.,  0.]), rgb=array([ 255.,  255.,  255.]), text=u'+', units='norm', win=Window(...), wrapWidth=1)
+11.1130 	EXP 	Created fixJitter = TextStim(alignHoriz='center', alignVert='center', antialias=True, autoLog=True, bold=False, color='white', colorSpace='named', contrast=1.0, depth=0.0, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=0.1, italic=False, name='fixJitter', opacity=1.0, ori=0, pos=array([ 0.,  0.]), rgb=array([ 255.,  255.,  255.]), text=u'+', units='norm', win=Window(...), wrapWidth=1)
+11.1148 	EXP 	Created postFixation = TextStim(alignHoriz='center', alignVert='center', antialias=True, autoLog=True, bold=False, color='white', colorSpace='named', contrast=1.0, depth=0.0, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=0.1, italic=False, name='postFixation', opacity=1.0, ori=0, pos=array([ 0.,  0.]), rgb=array([ 255.,  255.,  255.]), text=u'+', units='norm', win=Window(...), wrapWidth=1)
+11.1172 	EXP 	Created postscanFixation = TextStim(alignHoriz='center', alignVert='center', antialias=True, autoLog=True, bold=False, color='white', colorSpace='named', contrast=1.0, depth=0.0, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=0.1, italic=False, name='postscanFixation', opacity=1.0, ori=0, pos=array([ 0.,  0.]), rgb=array([ 255.,  255.,  255.]), text=u'+', units='norm', win=Window(...), wrapWidth=1)
+11.1239 	EXP 	Created text = TextStim(alignHoriz='center', alignVert='center', antialias=True, autoLog=True, bold=False, color='white', colorSpace='named', contrast=1.0, depth=0.0, flipHoriz=False, flipVert=False, font='Arial', fontFiles=[], height=0.1, italic=False, name='text', opacity=1.0, ori=0, pos=array([ 0.,  0.]), rgb=array([ 255.,  255.,  255.]), text=u'You are now finished with the task.\n', units='norm', win=Window(...), wrapWidth=1)
+11.1881 	EXP 	Imported lists/spractice/A_encoding_runlists.csv as conditions, 1 conditions, 1 params
+11.1883 	EXP 	Created sequence: sequential, trialTypes=1, nReps=1, seed=None
+11.1885 	EXP 	New trial (rep=0, index=0): {'x': u'lists/spractice/A_encoding_run1_stimlists.csv'}
+11.2124 	EXP 	instrux: autoDraw = True
+12.6838 	DATA 	Keypress: space
+12.6961 	EXP 	instrux: autoDraw = False
+12.6961 	EXP 	prescanFixation: autoDraw = True
+14.6816 	EXP 	Imported lists/spractice/A_encoding_run1_stimlists.csv as conditions, 4 conditions, 12 params
+14.6818 	EXP 	Created sequence: sequential, trialTypes=4, nReps=1, seed=None
+14.6821 	EXP 	New trial (rep=0, index=0): {'Category': u'cat', 'FixISI': 4.8550000000000004, 'ConList': 1, 'CB': u'A', 'ConLabel': u'within SF?', 'ImageFile': u'PracticeStim/cat1.jpg', 'EmotionType': None, 'RunID': 1, 'ConID': u'A', 'BlockRep': 1, 'ID': u'cat1', 'TrialType': u'Old'}
+14.6965 	EXP 	prescanFixation: autoDraw = False
+14.6965 	EXP 	prescanFixation: autoDraw = False
+14.6965 	EXP 	blockInstrux: text = u'within SF?'
+14.6965 	EXP 	blockInstrux: autoDraw = True
+16.6837 	EXP 	window1: recordFrameIntervals = False
+16.6973 	EXP 	blockInstrux: autoDraw = False
+16.6973 	EXP 	blockInstrux: autoDraw = False
+16.6973 	EXP 	scaleLabel: text = u'within SF?'
+16.6973 	EXP 	fixISI_1: autoDraw = True
+16.8037 	EXP 	window1: recordFrameIntervals = False
+17.1798 	EXP 	image: image = u'PracticeStim/cat1.jpg'
+17.1974 	EXP 	fixISI_1: autoDraw = False
+17.2138 	EXP 	image: autoDraw = True
+17.2138 	EXP 	scale: autoDraw = True
+17.2138 	EXP 	scaleLabel: autoDraw = True
+19.6975 	EXP 	image: autoDraw = False
+19.6975 	EXP 	fixISI_after: autoDraw = True
+20.6994 	EXP 	scale: autoDraw = False
+20.6994 	EXP 	scaleLabel: autoDraw = False
+20.6994 	EXP 	fixISI_after: autoDraw = False
+20.6994 	EXP 	image: autoDraw = False
+20.6994 	EXP 	scale: autoDraw = False
+20.6994 	EXP 	fixISI_1: autoDraw = False
+20.6994 	EXP 	scaleLabel: autoDraw = False
+20.6994 	EXP 	fixISI_after: autoDraw = False
+20.6994 	EXP 	fixJitter: autoDraw = True
+25.5331 	EXP 	New trial (rep=0, index=1): {'Category': u'dog', 'FixISI': 0.58899999999999997, 'ConList': 1, 'CB': u'A', 'ConLabel': u'within SF?', 'ImageFile': u'PracticeStim/dog1.jpg', 'EmotionType': None, 'RunID': 1, 'ConID': u'A', 'BlockRep': 1, 'ID': u'dog1', 'TrialType': u'Old'}
+25.5333 	EXP 	window1: recordFrameIntervals = False
+25.5497 	EXP 	fixJitter: autoDraw = False
+25.5497 	EXP 	fixJitter: autoDraw = False
+25.5497 	EXP 	postFixation: autoDraw = True
+25.5497 	EXP 	postFixation: autoDraw = False
+25.5497 	EXP 	blockInstrux: text = u'within SF?'
+25.5497 	EXP 	blockInstrux: autoDraw = True
+25.5497 	EXP 	blockInstrux: autoDraw = False
+25.5497 	EXP 	scaleLabel: text = u'within SF?'
+25.5497 	EXP 	fixISI_1: autoDraw = True
+25.5952 	EXP 	window1: recordFrameIntervals = False
+26.0335 	EXP 	image: image = u'PracticeStim/dog1.jpg'
+26.0498 	EXP 	image: autoDraw = True
+26.0498 	EXP 	scale: autoDraw = True
+26.0498 	EXP 	fixISI_1: autoDraw = False
+26.0498 	EXP 	scaleLabel: autoDraw = True
+28.5507 	EXP 	image: autoDraw = False
+28.5507 	EXP 	fixISI_after: autoDraw = True
+29.5509 	EXP 	scale: autoDraw = False
+29.5509 	EXP 	scaleLabel: autoDraw = False
+29.5509 	EXP 	fixISI_after: autoDraw = False
+29.5509 	EXP 	image: autoDraw = False
+29.5509 	EXP 	scale: autoDraw = False
+29.5509 	EXP 	fixISI_1: autoDraw = False
+29.5509 	EXP 	scaleLabel: autoDraw = False
+29.5509 	EXP 	fixISI_after: autoDraw = False
+29.5509 	EXP 	fixJitter: autoDraw = True
+30.1341 	EXP 	fixJitter: autoDraw = False
+30.1341 	EXP 	fixJitter: autoDraw = False
+30.1341 	EXP 	postFixation: autoDraw = True
+34.1189 	EXP 	New trial (rep=0, index=2): {'Category': u'dog', 'FixISI': 1.7549999999999999, 'ConList': 4, 'CB': u'A', 'ConLabel': u'prof photog?', 'ImageFile': u'PracticeStim/dog2.jpg', 'EmotionType': None, 'RunID': 1, 'ConID': u'D', 'BlockRep': 1, 'ID': u'dog2', 'TrialType': u'Old'}
+34.1355 	EXP 	postFixation: autoDraw = False
+34.1355 	EXP 	blockInstrux: text = u'prof photog?'
+34.1355 	EXP 	blockInstrux: autoDraw = True
+36.1236 	EXP 	window1: recordFrameIntervals = False
+36.1375 	EXP 	blockInstrux: autoDraw = False
+36.1375 	EXP 	scaleLabel: text = u'prof photog?'
+36.1375 	EXP 	fixISI_1: autoDraw = True
+36.1849 	EXP 	window1: recordFrameIntervals = False
+36.6201 	EXP 	image: image = u'PracticeStim/dog2.jpg'
+36.6372 	EXP 	image: autoDraw = True
+36.6372 	EXP 	scale: autoDraw = True
+36.6372 	EXP 	fixISI_1: autoDraw = False
+36.6372 	EXP 	scaleLabel: autoDraw = True
+39.1370 	EXP 	image: autoDraw = False
+39.1370 	EXP 	fixISI_after: autoDraw = True
+40.1377 	EXP 	image: autoDraw = False
+40.1377 	EXP 	scale: autoDraw = False
+40.1377 	EXP 	fixISI_1: autoDraw = False
+40.1377 	EXP 	scaleLabel: autoDraw = False
+40.1377 	EXP 	fixISI_after: autoDraw = False
+40.1377 	EXP 	fixJitter: autoDraw = True
+41.8721 	EXP 	New trial (rep=0, index=3): {'Category': u'cat', 'FixISI': 3.218, 'ConList': 4, 'CB': u'A', 'ConLabel': u'prof photog?', 'ImageFile': u'PracticeStim/cat2.jpg', 'EmotionType': None, 'RunID': 1, 'ConID': u'D', 'BlockRep': 1, 'ID': u'cat2', 'TrialType': u'Old'}
+41.8724 	EXP 	window1: recordFrameIntervals = False
+41.8885 	EXP 	fixJitter: autoDraw = False
+41.8885 	EXP 	fixJitter: autoDraw = False
+41.8885 	EXP 	postFixation: autoDraw = True
+41.8885 	EXP 	postFixation: autoDraw = False
+41.8885 	EXP 	blockInstrux: text = u'prof photog?'
+41.8885 	EXP 	blockInstrux: autoDraw = True
+41.8885 	EXP 	blockInstrux: autoDraw = False
+41.8885 	EXP 	scaleLabel: text = u'prof photog?'
+41.8885 	EXP 	fixISI_1: autoDraw = True
+41.9301 	EXP 	window1: recordFrameIntervals = False
+42.3718 	EXP 	image: image = u'PracticeStim/cat2.jpg'
+42.3886 	EXP 	fixISI_1: autoDraw = False
+42.4054 	EXP 	image: autoDraw = True
+42.4054 	EXP 	scale: autoDraw = True
+42.4054 	EXP 	scaleLabel: autoDraw = True
+44.8886 	EXP 	image: autoDraw = False
+44.8886 	EXP 	fixISI_after: autoDraw = True
+45.8897 	EXP 	scale: autoDraw = False
+45.8897 	EXP 	scaleLabel: autoDraw = False
+45.8897 	EXP 	fixISI_after: autoDraw = False
+45.8897 	EXP 	image: autoDraw = False
+45.8897 	EXP 	scale: autoDraw = False
+45.8897 	EXP 	fixISI_1: autoDraw = False
+45.8897 	EXP 	scaleLabel: autoDraw = False
+45.8897 	EXP 	fixISI_after: autoDraw = False
+45.8897 	EXP 	fixJitter: autoDraw = True
+49.1068 	EXP 	fixJitter: autoDraw = False
+49.1068 	EXP 	fixJitter: autoDraw = False
+49.1068 	EXP 	postFixation: autoDraw = True
+53.1084 	EXP 	postFixation: autoDraw = False
+53.1084 	EXP 	postscanFixation: autoDraw = True
+53.4600 	DATA 	Keypress: escape

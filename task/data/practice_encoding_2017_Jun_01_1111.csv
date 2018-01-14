@@ -1,0 +1,5 @@
+x,Category,FixISI,ConList,CB,ConLabel,ImageFile,EmotionType,RunID,ConID,BlockRep,ID,TrialType,runs.thisRepN,runs.thisTrialN,runs.thisN,runs.thisIndex,trials.thisRepN,trials.thisTrialN,trials.thisN,trials.thisIndex,instruxResp.keys,instruxResp.rt,response.keys,date,frameRate,expName,participant,condition,
+lists/spractice/A_encoding_run1_stimlists.csv,cat,4.855,1,A,within SF?,PracticeStim/cat1.jpg,None,1,A,1,cat1,Old,0,0,0,0,0,0,0,0,space,1.47167515755,None,2017_Jun_01_1111,59.7792575025,encoding,practice,A,
+lists/spractice/A_encoding_run1_stimlists.csv,dog,0.589,1,A,within SF?,PracticeStim/dog1.jpg,None,1,A,1,dog1,Old,0,0,0,0,0,1,1,1,,,None,2017_Jun_01_1111,59.7792575025,encoding,practice,A,
+lists/spractice/A_encoding_run1_stimlists.csv,dog,1.755,4,A,prof photog?,PracticeStim/dog2.jpg,None,1,D,1,dog2,Old,0,0,0,0,0,2,2,2,,,None,2017_Jun_01_1111,59.7792575025,encoding,practice,A,
+lists/spractice/A_encoding_run1_stimlists.csv,cat,3.218,4,A,prof photog?,PracticeStim/cat2.jpg,None,1,D,1,cat2,Old,0,0,0,0,0,3,3,3,,,None,2017_Jun_01_1111,59.7792575025,encoding,practice,A,

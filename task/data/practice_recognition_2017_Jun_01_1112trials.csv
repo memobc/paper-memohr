@@ -1,0 +1,12 @@
+Category,FixISI,ConList,CB,ConLabel,ImageFile,EmotionType,RunID,ConID,BlockRep,ID,TrialType,n,response_itemrec.keys_raw,response_itemrec.rt_mean,response_itemrec.rt_raw,response_itemrec.rt_std,response_sourceconf.keys_raw,response_sourceconf.rt_mean,response_sourceconf.rt_raw,response_sourceconf.rt_std,response_sourcerec.keys_raw,response_sourcerec.rt_mean,response_sourcerec.rt_raw,response_sourcerec.rt_std,order
+dog,4.855,1,A,within SF?,PracticeStim/dog2.jpg,None,1,A,1,dog2,Old,1.0,'v',1.7511370182,1.7511370182037354,0.0,'v',0.56929397583,0.5692939758300781,0.0,'b',0.668370008469,0.6683700084686279,0.0,0.0
+cat,0.589,1,A,within SF?,PracticeStim/cat1.jpg,None,1,A,1,cat1,New,1.0,'v',0.23486995697,0.23486995697021484,0.0,'v',0.684338092804,0.6843380928039551,0.0,'b',0.384477853775,0.3844778537750244,0.0,1.0
+catdog,1.755,4,A,prof photog?,PracticeStim/catdog.jpg,None,1,D,1,catdog,Old,1.0,'n',0.433643817902,0.43364381790161133,0.0,'v',0.51945400238,0.5194540023803711,0.0,'b',0.601203918457,0.6012039184570312,0.0,2.0
+dog,3.218,4,A,prof photog?,PracticeStim/dog1.jpg,None,1,D,1,dog1,Old,1.0,'v',0.200930833817,0.20093083381652832,0.0,'v',0.467078208923,0.46707820892333984,0.0,'b',0.484016895294,0.48401689529418945,0.0,3.0
+
+extraInfo
+date,2017_Jun_01_1112
+frameRate,60.0027180949
+expName,recognition
+participant,practice
+condition,A

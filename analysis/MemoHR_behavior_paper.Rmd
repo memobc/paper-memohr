@@ -1,0 +1,509 @@
+---
+title: "MemoHR fMRI Behavioral Data"
+author: "Maureen Ritchey"
+output:
+  html_notebook:
+    fig_height: 3
+    fig_width: 5
+    number_sections: yes
+    theme: spacelab
+    toc: yes
+    toc_float: yes
+    code_folding: hide
+  html_document:
+    fig_height: 3
+    fig_width: 5
+    code_folding: hide
+    number_sections: yes
+    theme: spacelab
+    toc: yes
+    toc_float: yes
+---
+
+This is the behavioral analysis to go along with the MemoHR fMRI project.
+
+```{r initialize, message=FALSE, warning=FALSE, include=FALSE}
+library('plyr')
+library('ez')
+library('ggplot2')
+library('dplyr')
+library('tidyr')
+library('memolabr')
+```
+
+# Load & process data
+### Options
+```{r loadData}
+subjects <- c('s04','s05','s06','s07','s08','s09','s10','s11',
+              's13','s14','s16','s17','s18',
+              's19','s20','s21','s22','s23','s25','s26','s27','s28') # subjects included in fMRI analysis
+datadir <- '/Volumes/External/MemoHR/Data/Behavioral/'
+outdir <- paste(datadir,'summary/',sep='')
+readOriginal <- FALSE # read in original csv files; otherwise pull from existing behavior_unprocessedData.Rdata 
+processData <- FALSE # recode variables etc; otherwise pull from existing behavior_processedData.Rdata 
+writeFiles <- FALSE # save out clean datafile per subject 
+
+dir.create(outdir)
+
+```
+
+### Read in original data
+```{r}
+if (readOriginal) {
+  encdata <- data.frame()
+  recdata <- data.frame()
+  for (sub in subjects) {
+    sub.encdata <- read.csv(paste(datadir,sub,'/',sub,'_encoding.csv',sep=""))
+    sub.recdata <- read.csv(paste(datadir,sub,'/',sub,'_recognition.csv',sep=""))
+    
+    sub.encdata$X <- NULL
+    sub.recdata$X <- NULL
+    encdata <- rbind(encdata,sub.encdata)
+    recdata <- rbind(recdata,sub.recdata)
+    save(encdata,recdata,outdir,subjects,file=paste(outdir,"behavior_unprocessedData.Rdata",sep=""))
+  }
+} else {
+  load(paste(outdir,"behavior_unprocessedData.Rdata",sep=""))
+}
+table(encdata$participant) # number of rows per participant - should be 192 trials + 6 run onset rows (except s20, missing one run)
+```
+
+### Process data
+```{r processData}
+if (processData) {
+  # Recode run numbers and trial numbers (start from 1 not 0)
+  encdata$runs.thisN <- encdata$runs.thisN + 1
+  encdata$trials.thisN <- encdata$trials.thisN + 1
+  recdata$trials.thisN <- recdata$trials.thisN + 1
+  
+  # Recode responses
+  encdata$responses.enc <- encdata$response.keys
+  encdata$responses.enc <- factor(encdata$responses.enc,levels=c("1","2","3","4"))
+  recdata$responses.itemrec <- revalue(recdata$response_itemrec.keys,c("n"="new","b"="fam","v"="rem"))
+  recdata$responses.itemrec <- factor(recdata$responses.itemrec,levels=c("new","fam","rem"))
+  recdata$responses.sourcerec <- revalue(recdata$response_sourcerec.keys,c("v"="within SF?","b"="professional photo?"))
+  recdata$responses.sourceconf <- revalue(recdata$response_sourceconf.keys,c("v"="sure","b"="unsure"))
+  recdata$responses.sourceconf <- factor(recdata$responses.sourceconf,levels=c("sure","unsure"))
+
+  # Score item memory responses
+  oldmask <- which(recdata$TrialType=="Old")
+  newmask <- which(recdata$TrialType=="New")
+  Fresp <- which(recdata$responses.itemrec=="fam")
+  Rresp <- which(recdata$responses.itemrec=="rem")
+  Nresp <- which(recdata$responses.itemrec=="new")
+  recdata$itemScore <- factor(NA,levels=c("Rec","Fam","Miss","R-FA","F-FA","CR"))
+  recdata$itemScore[intersect(oldmask,Rresp)] <- "Rec"
+  recdata$itemScore[intersect(oldmask,Fresp)] <- "Fam"
+  recdata$itemScore[intersect(oldmask,Nresp)] <- "Miss"
+  recdata$itemScore[intersect(newmask,Rresp)] <- "R-FA"
+  recdata$itemScore[intersect(newmask,Fresp)] <- "F-FA"
+  recdata$itemScore[intersect(newmask,Nresp)] <- "CR"
+  table(recdata$participant,recdata$itemScore)
+  
+  # Score source memory responses
+  encdata$ConLabel <- factor(encdata$ConLabel,levels=c("within SF?","professional photo?"))
+  recdata$ConLabel <- factor(recdata$ConLabel,levels=c("within SF?","professional photo?"))
+  recdata$responses.sourcerec <- factor(recdata$responses.sourcerec,levels=c("within SF?","professional photo?"))
+  recdata$sourceScore <- factor(NA,levels=c("Correct","Incorrect"))
+  recdata$sourceScore[recdata$ConLabel==recdata$responses.sourcerec & !is.na(recdata$responses.sourcerec)] <- "Correct"
+  recdata$sourceScore[recdata$ConLabel!=recdata$responses.sourcerec & !is.na(recdata$responses.sourcerec) & recdata$TrialType=="Old"] <- "Incorrect"
+  summary(recdata$sourceScore)
+  recdata$sourceScore.sure <- factor(NA,levels=c("Correct","Incorrect"))
+  recdata$sourceScore.sure[recdata$ConLabel==recdata$responses.sourcerec & !is.na(recdata$responses.sourcerec) & recdata$responses.sourceconf=="sure"] <- "Correct"
+  recdata$sourceScore.sure[recdata$ConLabel!=recdata$responses.sourcerec & !is.na(recdata$responses.sourcerec) & recdata$TrialType=="Old"] <- "Incorrect"
+  recdata$sourceScore.sure[recdata$ConLabel==recdata$responses.sourcerec & !is.na(recdata$responses.sourcerec) & recdata$responses.sourceconf=="unsure"] <- "Incorrect"
+  summary(recdata$sourceScore.sure)
+  table(interaction(recdata$ConLabel,recdata$participant),recdata$sourceScore)
+  
+  # Get rid of extra run onset rows in encoding
+  encdata <- subset(encdata,!is.na(onsetTimeTrial))
+  
+  # Merge data
+  alldata <- merge(encdata,recdata,by=c("participant","ID","EmotionType","TrialType",
+                                     "Category","ConID","ImageFile","Category","condition",
+                                     "ConList","ConLabel","CB"),all.x=TRUE,all.y=TRUE,suffixes=c('.E','.R'))
+  alldata$EmotionType <- revalue(alldata$EmotionType,c("Negative"="Emo","Neutral"="Neu"))
+  
+  # Save cleaned up version
+  outputdata <- alldata[,c("participant","ID","EmotionType","TrialType","Category","CB","ConLabel",
+                        "runs.thisN","trials.thisN.E","onsetTimeCue","onsetTimeTrial","responses.enc","response.rt",
+                        "trials.thisN.R","responses.itemrec","responses.sourcerec","responses.sourceconf",
+                        "response_itemrec.rt","response_sourcerec.rt","response_sourceconf.rt","itemScore","sourceScore",
+                        "sourceScore.sure")]
+  
+  save(outputdata,file=paste(outdir,"behavior_processedData.Rdata",sep=""))
+} else {
+  load(paste(outdir,"behavior_processedData.Rdata",sep=""))
+}
+
+```
+
+### Write clean datafiles
+``` {r writeClean}
+
+if (writeFiles) {
+  for (sub in subjects) {
+    # Write out a cleaned up csv of all of the data - used for generating model regressors later
+    outputdata.cursub <- subset(outputdata,participant==as.numeric(substring(sub,2,3))) 
+    dataFilename <- paste(datadir,sub,'/',sub,'_alldata.csv',sep="")
+    write.csv(outputdata.cursub, file=dataFilename)
+  }
+}
+
+```
+
+
+# Analyze memory data
+## Item recognition
+### Base response rates
+
+```{r itemRecogAnalysis}
+
+# denominator
+sumdata.itemrec <- filter(outputdata,!is.na(itemScore) & TrialType=="Old") %>%
+  group_by(participant,EmotionType) %>%
+  summarize(allFreq = length(EmotionType))
+# numerator
+curdata.itemrec <- filter(outputdata,!is.na(itemScore) & TrialType=="Old") %>%
+  group_by(participant,EmotionType,itemScore) %>%
+  summarize(respFreq = length(itemScore)) 
+# rate
+curdata.itemrec <- merge(curdata.itemrec,sumdata.itemrec,by=c("participant","EmotionType")) %>%
+  mutate(respRate = respFreq/allFreq,
+         x = interaction(EmotionType,itemScore))
+
+# Plot mean+-SEM rates
+meandata.itemrec <- filter(curdata.itemrec,!is.na(itemScore)) %>%
+  group_by(itemScore,EmotionType) %>%
+  summarize(meanval=mean(respRate),
+            sdval=sd(respRate),
+            sem=sdval/sqrt(length(respRate)),
+            nsubj=length(respRate))
+mybarplot(data=meandata.itemrec,xvar="EmotionType",fillvar="EmotionType",facets=c(".","itemScore"),errorbars=TRUE) + 
+  ylab('Response Rate') + xlab('') + theme_minimal(24) # functions from memolabr
+
+```
+
+These are just the basic response rates. Now let's estimate recollection and familiarity. We'll correct for false alarms, and familiarity will be adjusted according to the independence assumption (i.e., familiarity reflects number of Fam responses corrected for the rate of Rec responses).
+
+### Corrected rates 
+#### Calculate corrected rates
+
+``` {r itemRecogAnalysis-corrected}
+
+# denominator
+sumdata.itemrec.corr <- filter(outputdata,!is.na(itemScore)) %>%
+  group_by(participant,EmotionType,TrialType) %>%
+  summarize(allFreq = length(EmotionType))
+# numerator
+curdata.itemrec.corr <- filter(outputdata,!is.na(itemScore)) %>%
+  group_by(participant,EmotionType,itemScore,TrialType) %>%
+  summarize(respFreq = length(itemScore)) # trials of each type
+# rates
+curdata.itemrec.corr.allrates <- merge(curdata.itemrec.corr,sumdata.itemrec.corr,by=c("participant","EmotionType","TrialType")) %>%
+  mutate(respRate = respFreq/allFreq) # calculate response rate
+
+# Calculate rates - filling in zeroes for anyone with missing combination (e.g., no recollection FAs)
+curdata.itemrec.corr.allrates.summary <- 
+  group_by(curdata.itemrec.corr.allrates,participant,EmotionType) %>%
+  mutate(tmp1=length(which(itemScore=="R-FA")),
+         Rold=respRate[itemScore=="Rec"],
+         Rnew=ifelse(tmp1>0,respRate[itemScore=="R-FA"],0),
+         tmp2=length(which(itemScore=="F-FA")),
+         Fold=respRate[itemScore=="Fam"],
+         Fnew=ifelse(tmp2>0,respRate[itemScore=="F-FA"],0),
+         tmp3=length(which(itemScore=="Miss")),
+         missRate = ifelse(tmp3>0,respRate[itemScore=="Miss"],0),
+         tmp4=length(which(itemScore=="CR")),
+         CRrate = ifelse(tmp4>0,respRate[itemScore=="CR"],0)
+  ) %>% 
+  select(participant,EmotionType,Rold,Rnew,Fold,Fnew,missRate,CRrate) %>%
+  unique() %>%
+  as.data.frame()
+
+# Calculate corrected rates - somewhat redundant with above for legacy reasons
+curdata.itemrec.corr <- 
+  group_by(curdata.itemrec.corr.allrates,participant,EmotionType) %>%
+  mutate(tmp1=length(which(itemScore=="R-FA")),
+         Rold=respRate[itemScore=="Rec"],
+         Rnew=ifelse(tmp1>0,respRate[itemScore=="R-FA"],0),
+         cRec=(Rold - Rnew)/(1 - Rnew),
+         tmp2=length(which(itemScore=="F-FA")),
+         Fold=respRate[itemScore=="Fam"],
+         Fnew=ifelse(tmp2>0,respRate[itemScore=="F-FA"],0),
+         cFam=(Fold/(1-Rold)) - (Fnew/(1-Rnew))
+  ) %>% 
+  select(participant,EmotionType,cRec,cFam) %>%
+  unique() %>%
+  gather("correctedRate","value",3:4) %>%
+  as.data.frame()
+```
+
+#### Plot & stats for item recognition
+``` {r itemRecog-PlotStats}
+
+# Plot mean+-SEM
+curdata.itemrec.corr$correctedRate <- factor(curdata.itemrec.corr$correctedRate,levels=c("cRec","cFam"))
+meandata.itemrec.corr <- filter(curdata.itemrec.corr,!is.na(correctedRate)) %>%
+  group_by(correctedRate,EmotionType) %>%
+  summarize(meanval=mean(value),
+            sdval=sd(value),
+            sem = sdval/sqrt(length(value)),
+            nsubj=length(value)) 
+mybarplot(data=meandata.itemrec.corr,xvar="EmotionType",fillvar="EmotionType",facets=c(".","correctedRate"),errorbars=TRUE) +
+  ylab('Corrected Rate') + xlab('') + theme_minimal(24) #+ scale_y_continuous(expand=c(0.01,0.01))
+
+# Stats
+## Recollection
+ezANOVA(data=subset(curdata.itemrec.corr,correctedRate=="cRec"),dv=value,wid=participant,within=c(EmotionType),type=3)
+
+## Familiarity
+ezANOVA(data=subset(curdata.itemrec.corr,correctedRate=="cFam"),dv=value,wid=participant,within=c(EmotionType),type=3)
+
+
+# Store corrected recognition scores
+itemrecdata <- spread(curdata.itemrec.corr,correctedRate,value)
+itemrecdata %>%
+  group_by(participant) %>%
+  summarize(cRec = cRec[EmotionType=="Emo"] - cRec[EmotionType=="Neu"],
+            cFam = cFam[EmotionType=="Emo"] - cFam[EmotionType=="Neu"],
+            EmotionType = 'EmovNeu') -> tmp
+itemrecdata %>%
+  select(participant,cRec,cFam,EmotionType) %>%
+  rbind(tmp) -> itemrecdata
+head(itemrecdata)
+```
+
+There is a significant enhancing effect of emotion on recollection estimates but not on familiarity estimates.
+
+## Source memory
+### Both levels of confidence - Stats for source memory
+
+```{r sourceRecogAnalysis}
+
+# denominator
+outputdata %>%
+  filter(!is.na(sourceScore) & TrialType=="Old" & itemScore!="Miss") %>%
+  group_by(participant,EmotionType) %>%
+  summarize(allFreq = length(EmotionType)) -> sumdata.src
+# numerator
+outputdata %>%
+  filter(TrialType=="Old" & itemScore!="Miss") %>%
+  group_by(participant,EmotionType,sourceScore) %>%
+  summarize(respFreq = length(sourceScore)) -> curdata.src
+# rates
+curdata.src <- merge(curdata.src,sumdata.src,by=c("participant","EmotionType")) %>%
+  mutate(respRate = respFreq/allFreq) %>%
+  filter(sourceScore=="Correct")
+
+# Plot mean+-SE
+curdata.src %>%
+  group_by(EmotionType) %>%
+  summarize(meanval=mean(respRate),
+            sdval=sd(respRate),
+            sem = sdval/sqrt(length(respRate)),
+            nsubj=length(respRate)) -> meandata.src
+mybarplot(data=meandata.src,xvar="EmotionType",fillvar="EmotionType",errorbars=TRUE) +
+  ylab('Source Accuracy') + geom_hline(aes(yintercept=.5), linetype="dashed") + theme_minimal(24)
+
+# Stats
+## Source Accuracy
+ezANOVA(data=as.data.frame(curdata.src),dv=respRate,wid=participant,within=c(EmotionType),type=3)
+## Source Accuracy corrected for chance rate (for testing intercept)
+curdata.src$respRate.corr <- curdata.src$respRate - .5
+ezANOVA(data=as.data.frame(curdata.src),dv=respRate.corr,wid=participant,within=c(EmotionType),type=3,detailed=TRUE)
+
+# #### Store source recognition scores
+curdata.src %>%
+  group_by(participant) %>%
+  summarize(sourceRate = respRate[EmotionType=="Emo"] - respRate[EmotionType=="Neu"],
+            EmotionType = 'EmovNeu') -> tmp
+curdata.src %>%
+  mutate(sourceRate = respRate) %>%
+  select(participant,sourceRate,EmotionType) %>%
+  rbind(tmp) -> sourcerecdata
+head(sourcerecdata)
+```
+There is no significant effect of emotion on source accuracy (collapsing high and low confidence). What if we now consider high-confidence responses only?
+
+### High-confidence source memory
+
+```{r sourceRecogAnalysis-sure}
+
+# ### Plot source memory distribution: Rate
+
+# denominator
+outputdata %>%
+  filter(!is.na(sourceScore.sure) & TrialType=="Old" & itemScore!="Miss") %>%
+  group_by(participant,EmotionType) %>%
+  summarize(allFreq = length(EmotionType)) -> sumdata.src.sure
+# numerator
+outputdata %>%
+  filter(TrialType=="Old" & itemScore!="Miss") %>%
+  group_by(participant,EmotionType,sourceScore.sure) %>%
+  summarize(respFreq = length(sourceScore.sure)) -> curdata.src.sure
+# rate
+curdata.src.sure <- merge(curdata.src.sure,sumdata.src.sure,by=c("participant","EmotionType")) %>%
+  mutate(respRate = respFreq/allFreq) %>%
+  filter(sourceScore.sure=="Correct")
+
+# Plot mean+-SEM
+curdata.src.sure %>%
+  group_by(EmotionType) %>%
+  summarize(meanval=mean(respRate),
+            sdval=sd(respRate),
+            sem = sdval/sqrt(length(respRate)),
+            nsubj=length(respRate)) -> meandata.src.sure
+mybarplot(data=meandata.src.sure,xvar="EmotionType",fillvar="EmotionType",errorbars=TRUE) +
+  ylab('Source Accuracy') + theme_minimal(24)
+
+# Stats
+## Source Accuracy - High confidence
+ezANOVA(data=as.data.frame(curdata.src.sure),dv=respRate,wid=participant,within=c(EmotionType),type=3)
+
+# #### Store source recognition scores
+curdata.src.sure %>%
+  group_by(participant) %>%
+  summarize(sourceRate = respRate[EmotionType=="Emo"] - respRate[EmotionType=="Neu"],
+            EmotionType = 'EmovNeu') -> tmp
+curdata.src.sure %>%
+  mutate(sourceRate = respRate) %>%
+  select(participant,sourceRate,EmotionType) %>%
+  rbind(tmp) -> sourcerecdata.sure.all
+
+```
+
+There appears to be an impairing effect of emotion on high-confidence source accuracy. However, this estimate is not corrected for bias to use the high-confidence rating. So let's fix that.
+
+### High-confidence source memory correcting for high-conf incorrect
+
+```{r sourceConf-alt}
+
+# Relabel only "sure" incorrect responses as incorrect; unsure marked unsure
+outputdata$sourceScore.sure.new <- factor(NA,levels=c("Correct","Incorrect","Unsure"))
+outputdata$sourceScore.sure.new[outputdata$ConLabel==outputdata$responses.sourcerec & !is.na(outputdata$responses.sourcerec) & outputdata$responses.sourceconf=="sure"  & outputdata$TrialType=="Old"] <- "Correct"
+outputdata$sourceScore.sure.new[outputdata$ConLabel!=outputdata$responses.sourcerec & !is.na(outputdata$responses.sourcerec) & outputdata$responses.sourceconf=="sure" & outputdata$TrialType=="Old"] <- "Incorrect"
+outputdata$sourceScore.sure.new[!is.na(outputdata$responses.sourcerec) & outputdata$responses.sourceconf=="unsure" & outputdata$TrialType=="Old"] <- "Unsure"
+
+# denominator
+outputdata %>%
+  filter(!is.na(sourceScore.sure.new) & TrialType=="Old" & itemScore!="Miss") %>%
+  group_by(participant,EmotionType) %>%
+  summarize(allFreq = length(EmotionType)) -> sumdata.src.corr
+# numerator
+outputdata %>%
+  filter(TrialType=="Old" & itemScore!="Miss") %>%
+  group_by(participant,EmotionType,sourceScore.sure.new) %>%
+  summarize(respFreq = length(sourceScore.sure.new)) -> curdata.src.corr
+# rate
+curdata.src.corr <- merge(curdata.src.corr,sumdata.src.corr,by=c("participant","EmotionType")) %>%
+  mutate(respRate = respFreq/allFreq)
+
+# the above was the same as before - now correct for rate of high-confidence incorrect source responses
+curdata.src.corr <- curdata.src.corr %>%
+  group_by(participant,EmotionType) %>%
+  mutate(nFA = length(respRate[sourceScore.sure.new=="Incorrect"]),
+         respRate = ifelse(nFA>0,
+                           respRate[sourceScore.sure.new=="Correct"] - respRate[sourceScore.sure.new=="Incorrect"],
+                           respRate[sourceScore.sure.new=="Correct"])) %>%
+  filter(sourceScore.sure.new=="Correct") # corrected for incorrect sure responses (old items only)
+
+# Plot mean+-SEM
+curdata.src.corr %>% 
+  group_by(EmotionType) %>%
+  summarize(meanval=mean(respRate),
+            sdval=sd(respRate),
+            sem = sdval/sqrt(length(respRate)),
+            nsubj=length(respRate)) -> meandata.src.corr
+mybarplot(data=meandata.src.corr,xvar="EmotionType",fillvar="EmotionType",errorbars=TRUE) +
+  ylab('Source Accuracy') + theme_minimal(24)
+
+#' #### Stats
+#' Source Accuracy
+ezANOVA(data=as.data.frame(curdata.src.corr),dv=respRate,wid=participant,within=c(EmotionType),type=3)
+
+```
+
+After correcting the high-confidence source accuracy rates, there is no significant effect of emotion.
+
+# Summarize data
+## Save scores
+
+```{r saveScores}
+# Merge together all summary measures (itemrec, sourcerec, sourcerec-sure)
+sourcerecdata <- merge(sourcerecdata,sourcerecdata.sure.all,by=c("participant","EmotionType"),suffixes=c("",".sure"))
+summarydata <- merge(itemrecdata,sourcerecdata,by=c("participant","EmotionType"),suffixes=c(".item",".source"))
+
+# use subject IDs instead of just numbers
+snamefun <- function(s) {
+  if (s<10) {sname <- paste0('s0',as.character(s))}
+  else { sname <- paste0('s',as.character(s))}
+  return(sname)
+}
+summarydata$subject <- sapply(summarydata$participant,snamefun)
+
+head(summarydata)
+write.csv(summarydata,file=paste0(outdir,'behavioral_summary_scores.csv'))
+```
+
+## Table of behavioral data
+```{r tableForPaper}
+
+# separate for easy indexing in markdown-formatted table (below)
+summarydata %>%
+  filter(EmotionType=="Emo")  -> emoScores
+summarydata %>%
+  filter(EmotionType=="Neu")  -> neuScores
+
+curdata.itemrec.corr.allrates.summary %>%
+  filter(EmotionType=="Emo") -> emoScores.rates
+curdata.itemrec.corr.allrates.summary %>%
+  filter(EmotionType=="Neu") -> neuScores.rates
+
+formatMSD <- function(df) {
+  meanval <- mean(df)
+  sdval <- sd(df)
+  sprintf("%0.2f (%0.2f)",meanval,sdval)
+}
+
+```
+### Paper Table 1
+
+| Condition | Remember rate | Familiar rate | New Rate | Recollection estimate | Familiarity estimate | Source accuracy | Source accuracy - high confidence |
+| ------------- |:-------------:| -----:| -----:| -----:| -----:| -----:| -----:|
+| Emotion - old | `r formatMSD(emoScores.rates$Rold)` | `r formatMSD(emoScores.rates$Fold)` | `r formatMSD(emoScores.rates$missRate)` | `r formatMSD(emoScores$cRec)` | `r formatMSD(emoScores$cFam)` | `r formatMSD(emoScores$sourceRate)` | `r formatMSD(emoScores$sourceRate.sure)` |
+| Neutral - old | `r formatMSD(neuScores.rates$Rold)` | `r formatMSD(neuScores.rates$Fold)` | `r formatMSD(neuScores.rates$missRate)` | `r formatMSD(neuScores$cRec)` | `r formatMSD(neuScores$cFam)` | `r formatMSD(neuScores$sourceRate)` | `r formatMSD(neuScores$sourceRate.sure)` |
+| Emotion - new | `r formatMSD(emoScores.rates$Rnew)` | `r formatMSD(emoScores.rates$Fnew)` | `r formatMSD(emoScores.rates$CRrate)` | - | - | - | - |
+| Neutral - new | `r formatMSD(neuScores.rates$Rnew)` | `r formatMSD(neuScores.rates$Fnew)` | `r formatMSD(neuScores.rates$CRrate)` | - | - | - | - |
+
+
+## Paper Figure 2 - Behavioral data plot
+```{r plotForPaper, fig.height=3, fig.width=5}
+
+plotcolors1 <- c('#e9a3c9','#a1d76a','#e9a3c9','#a1d76a','#e9a3c9','#a1d76a')
+plotcolors2 <- c('#d01c8b','#4dac26')
+
+
+# Reformat dataframe for easier plotting
+summarydata %>%
+  filter(EmotionType=="Emo" | EmotionType=="Neu") %>%
+  gather(measure,value,-participant,-EmotionType,-subject) -> summarydata.long
+summarydata.long$measure <- factor(summarydata.long$measure,levels=c("cRec","cFam","sourceRate","sourceRate.sure"))
+
+summarydata.long.rec <- filter(summarydata.long,measure=="cRec" | measure=="cFam" | measure=="sourceRate" )
+summarydata.long.src <- filter(summarydata.long,measure=="sourceRate" | measure=="sourceRate.sure")
+
+# Plot all behavioral measures
+summarydata.long.rec %>%
+  group_by(measure,EmotionType) %>%
+  summarize(meanval=mean(value),
+            sem=sd(value)/sqrt(length(value))) %>%
+  ggplot(aes(x=EmotionType,y=meanval)) + 
+  geom_bar(stat="identity",color="gray40",fill=plotcolors1) + theme_minimal(18) +
+  facet_grid(.~measure) +
+  geom_dotplot(data=summarydata.long.rec,aes(x=EmotionType,y=value,fill=EmotionType), binaxis = "y", stackdir = "center", binwidth=.02) +
+  geom_errorbar(aes(x=EmotionType,ymin=meanval-sem,ymax=meanval+sem,width=.2)) +
+  scale_fill_manual(values=plotcolors2) + ylab("Mean corrected rate") + xlab("")
+
+```
+

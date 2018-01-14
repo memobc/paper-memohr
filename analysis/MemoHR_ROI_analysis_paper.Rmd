@@ -1,0 +1,482 @@
+---
+title: "MemoHR fMRI ROI Activation Data"
+author: "Maureen Ritchey"
+output:
+  html_notebook:
+    code_folding: hide
+    number_sections: yes
+    theme: cosmo
+    toc: yes
+    toc_float: yes
+  html_document:
+    code_folding: hide
+    number_sections: yes
+    toc: yes
+    toc_float: yes
+---
+
+```{r init, message=FALSE, warning=FALSE, include=FALSE}
+library('ggplot2')
+library('dplyr') 
+library('tidyr')
+library('knitr')
+library('ez')
+options(digits=3)
+options(scipen = 999)
+```
+
+
+# Load & Process data
+```{r}
+
+savepath <- '../../Analysis/ROI_estimates/'
+behavpath <- '../../Data/Behavioral/summary/'
+
+## Load data from csv
+### Activation estimates
+actdata<-read.csv(paste0(savepath,'cons_ashs_ItemSourceDM_rf_new.csv')) # created with output_roi_cons script in Matlab
+
+### ROI metadata
+roidata<-read.csv('../../Analysis/ROI_estimates/roi_info.csv') # contains various labeling schemes for ROIs
+actdata <- merge(actdata,roidata,by="roi_file")
+rm(roidata)
+
+### Clean up data
+# first deal with s21, who had to have EmoK subbed in for EmoM (no EmoM trials)
+actdata <- unique(actdata) # remove doubled-up EmoK
+tmp <-subset(actdata,subject=="s21" & contrast=="EmoK") # get the EmoK for relabel -> these trial types get averaged anyway
+tmp$contrast <- "EmoM"
+actdata <- rbind(actdata,tmp) # pull back into main dataframe
+
+### Define new variables
+actdata$Emotion <- factor(sapply(actdata$contrast,simplify=TRUE,
+                                 function(x) ifelse(grepl('Emo',x),'Emo',
+                                                    ifelse(grepl('Neu',x),'Neu',NA))))
+actdata <- subset(actdata,!is.na(actdata$Emotion)) # get rid of all other contrasts
+
+
+actdata$RecMem <- factor(sapply(actdata$contrast,simplify=TRUE,
+                                      function(x) ifelse(grepl('R',x),'Rec',
+                                                         ifelse(grepl('K',x),'Non-Rec',
+                                                                ifelse(grepl('M',x),'Non-Rec',NA)))),
+                               levels=c("Rec","Non-Rec"))
+actdata$SourceMem <- factor(sapply(actdata$contrast,simplify=TRUE,
+                                   function(x) ifelse(grepl('SC',x),'Corr',
+                                                      ifelse(grepl('SI',x),'Incorr',NA))))
+
+actdata$BothMem <- factor(ifelse(actdata$RecMem=="Rec" & actdata$SourceMem=="Corr","R+S",
+                                 ifelse(actdata$RecMem=="Rec" & actdata$SourceMem=="Incorr","R-S",
+                                        ifelse(actdata$RecMem=="Non-Rec","NR",NA))),
+                          levels=c("R+S","R-S","NR"))
+
+str(actdata)
+kable(table(actdata$BothMem,actdata$subject))
+
+## Create dataframe with 'baseline-corrected' scores, i.e., recollection trial types minus non-recollection
+nrbaseline <-
+  group_by(actdata,subject,Emotion,roi_file) %>%
+  summarize(nr.baseline = mean(activity[RecMem=="Non-Rec"],na.rm=TRUE)) # average over Fam & Miss
+actdata.rec <-
+  filter(actdata,RecMem=="Rec") %>%
+  left_join(nrbaseline)  %>%
+  mutate(activity = activity - nr.baseline) # values in actdata.rec are now recollection-related activity
+  
+## Clean up and save
+save(actdata,file=paste0(savepath,'MemoHR_AnatROI_Data_ItemSource.Rdata'))
+
+```
+
+## Report number of voxels in each ROI
+```{r numVox}
+vox <- group_by(actdata,RegionAP) %>%
+  summarize(meanvox=mean(numvox),
+            minvox=min(numvox),
+            maxvox=max(numvox))
+kable(vox)
+```
+
+# Plots
+## Calculate summary values first
+```{r calcSummary}
+summarydata.all <- group_by(actdata,subject,Emotion,RecMem,SourceMem,Region,RegionAP,MainRegion,AP) %>%
+  summarize(activity=mean(activity)) # This part averages across hemispheres, and fam/miss are averaged into non-rec
+meandata.all <- group_by(summarydata.all,Region,RegionAP,MainRegion,AP,Emotion) %>%
+  group_by(Emotion,RecMem,SourceMem,Region,RegionAP,MainRegion,AP) %>%
+  summarize(meanval=mean(activity,na.rm=TRUE),sdval=sd(activity,na.rm=TRUE),
+            sem=sdval/sqrt(length(activity)),
+            semmin=meanval-sem,
+            semmax=meanval+sem,
+            nsubj=length(activity))
+meandata.all$EmoMem <- interaction(meandata.all$RecMem,meandata.all$Emotion)
+meandata.all$MemMem <- interaction(meandata.all$RecMem,meandata.all$SourceMem)
+meandata.all$MemMem <- factor(meandata.all$MemMem,levels=c("Rec.Corr","Rec.Incorr","Non-Rec"))
+meandata.all$MemMem[is.na(meandata.all$MemMem)] <- "Non-Rec"
+
+summarydata.rec <- group_by(actdata.rec,subject,Emotion,RecMem,SourceMem,Region,RegionAP,MainRegion,AP) %>%
+  summarize(activity=mean(activity))  # This part averages across hemispheres
+meandata.rec <- group_by(summarydata.rec,Region,RegionAP,MainRegion,AP,Emotion) %>%
+  group_by(Emotion,RecMem,SourceMem,Region,RegionAP,MainRegion,AP) %>%
+  summarize(meanval=mean(activity,na.rm=TRUE),sdval=sd(activity,na.rm=TRUE),
+            sem=sdval/sqrt(length(activity)),
+            semmin=meanval-sem,
+            semmax=meanval+sem,
+            nsubj=length(activity))
+meandata.rec$EmoMem <- interaction(meandata.rec$RecMem,meandata.rec$Emotion)
+meandata.rec$MemMem <- interaction(meandata.rec$RecMem,meandata.rec$SourceMem)
+meandata.rec$MemMem <- factor(meandata.rec$MemMem,levels=c("Rec.Corr","Rec.Incorr","Non-Rec"))
+meandata.rec$MemMem[is.na(meandata.rec$MemMem)] <- "Non-Rec"
+```
+
+## Plots with all bars
+### Main regions
+
+```{r, fig.height=5, fig.width=10}
+
+# All regions
+plotcolors <- c('#d01c8b','#f1b6da',"gray70",'#4dac26','#b8e186',"gray70")
+
+meandata.all %>%
+  filter(RegionAP=="Amyg" | RegionAP=="wholeHipp") %>%
+  ungroup() %>%
+  mutate(RegionAP = factor(RegionAP,levels=c("Amyg","wholeHipp")),
+         RegionLabel = factor(ifelse(RegionAP=="wholeHipp","Hipp","Amyg"),
+                              levels=c("Amyg","Hipp")),
+         MemoryCond = factor(ifelse(MemMem=="Rec.Corr","Rec + Src",ifelse(MemMem=="Rec.Incorr","Rec - Src","Non-Rec")),
+                             levels=c("Rec + Src","Rec - Src","Non-Rec")),
+         EmoMem = interaction(MemoryCond,Emotion)) %>%
+  ggplot(.,aes(x=MemoryCond,y=meanval)) + geom_bar(stat="identity",position="dodge",aes(fill=EmoMem)) +
+  geom_errorbar(aes(ymin=meanval-sem,ymax=meanval+sem,width=.25)) + theme_minimal(18) +
+  theme(axis.title.x=element_blank()) + facet_grid(.~RegionLabel+Emotion) +
+  xlab("Mean activity (au)") + scale_fill_manual(values=plotcolors) +  guides(color=FALSE, fill=FALSE) + 
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+
+meandata.all %>%
+  filter(RegionAP=="PHC" | RegionAP=="PRC") %>%
+  ungroup() %>%
+  mutate(RegionAP = factor(RegionAP,levels=c("PRC","PHC")),
+         MemoryCond = factor(ifelse(MemMem=="Rec.Corr","Rec + Src",ifelse(MemMem=="Rec.Incorr","Rec - Src","Non-Rec")),
+                             levels=c("Rec + Src","Rec - Src","Non-Rec")),
+         EmoMem = interaction(MemoryCond,Emotion)) %>%
+  ggplot(.,aes(x=MemoryCond,y=meanval)) + geom_bar(stat="identity",position="dodge",aes(fill=EmoMem)) +
+  geom_errorbar(aes(ymin=meanval-sem,ymax=meanval+sem,width=.25)) + theme_minimal(18) +
+  theme(axis.text.x=element_blank(),axis.title.x=element_blank()) + facet_grid(.~RegionAP+Emotion) +
+  xlab("Mean activity (au)") + scale_fill_manual(values=plotcolors) +  guides(color=FALSE, fill=FALSE) + 
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+
+```
+
+## Plots with bars subtracting non-recollection
+
+### Single Plots
+```{r}
+plotcolors <- c('#d01c8b','#f1b6da','#4dac26','#b8e186')
+
+singlePlotROI <- function(roi) {
+  meandata.rec %>%
+  filter(RegionAP==roi) %>%
+  ungroup() %>%
+  mutate(MemoryCond = factor(ifelse(MemMem=="Rec.Corr","Rec + Src",ifelse(MemMem=="Rec.Incorr","Rec - Src","Non-Rec")),
+                             levels=c("Rec + Src","Rec - Src","Non-Rec")),
+         EmoMem = interaction(MemoryCond,Emotion)) %>%
+  ggplot(.,aes(x=MemoryCond,y=meanval)) + geom_bar(stat="identity",position="dodge",aes(fill=EmoMem)) +
+  geom_errorbar(aes(ymin=meanval-sem,ymax=meanval+sem,width=.25)) + theme_minimal(18) +
+  theme(axis.text.x=element_blank(),axis.title.x=element_blank()) + facet_grid(.~Emotion,switch="x") +
+  ylab("Recollection-related activity") + scale_fill_manual(values=plotcolors) + guides(color=FALSE) +
+    ggtitle(roi) 
+}
+singlePlotROI_fixedLim <- function(roi,limits) { # fix limits for some plots for better visualization
+  singlePlotROI(roi) + ylim(limits)
+}
+
+# Plot all regions
+singlePlotROI_fixedLim('Amyg',c(-.25,1))
+singlePlotROI_fixedLim('wholeHipp',c(-.25,1))
+singlePlotROI('PRC')
+singlePlotROI('PHC')
+```
+
+# Stats
+
+## All regions
+```{r, message=FALSE, warning=FALSE}
+statdata1 <- subset(actdata.rec,RegionAP=="wholeHipp" | Region=="Amyg"  | Region=="PRC"  | Region=="PHC") 
+summary(droplevels(statdata1$Region)) # Note that hemisphere is still included but ezANOVA will average them
+anova_mod1<-ezANOVA(statdata1,dv=activity,wid=subject,within=list(BothMem,Emotion,Region),type=3,detailed=TRUE)
+print(anova_mod1)
+
+rm(statdata1,anova_mod1)
+```
+
+# Follow-up tests
+## Amygdala vs PRC
+```{r, message=FALSE, warning=FALSE}
+statdata1 <- subset(actdata.rec,RegionAP=="PRC" | Region=="Amyg") 
+summary(droplevels(statdata1$Region)) # Note that hemisphere is still included but ezANOVA will average them
+anova_mod1<-ezANOVA(statdata1,dv=activity,wid=subject,within=list(BothMem,Emotion,Region),type=3,detailed=TRUE)
+print(anova_mod1$ANOVA)
+
+statdata2 <- subset(actdata.rec,RegionAP=="PRC" )
+anova_mod2<-ezANOVA(statdata2,dv=activity,wid=subject,within=list(BothMem,Emotion),type=3,detailed=TRUE)
+print(anova_mod2$ANOVA)
+
+statdata3 <- subset(actdata.rec,Region=="Amyg")
+anova_mod3<-ezANOVA(statdata3,dv=activity,wid=subject,within=list(BothMem,Emotion),type=3,detailed=TRUE)
+print(anova_mod3$ANOVA)
+
+rm(statdata1,statdata2,statdata3,anova_mod1,anova_mod2,anova_mod3)
+```
+
+## PHC vs whole hippocampus
+```{r, message=FALSE, warning=FALSE}
+statdata1 <- subset(actdata.rec,RegionAP=="wholeHipp" | Region=="PHC") 
+summary(droplevels(statdata1$Region)) # Note that hemisphere is still included but ezANOVA will average them
+anova_mod1<-ezANOVA(statdata1,dv=activity,wid=subject,within=list(BothMem,Emotion,Region),type=3,detailed=TRUE)
+print(anova_mod1$ANOVA)
+
+statdata2 <- subset(actdata.rec,RegionAP=="wholeHipp" )
+anova_mod2<-ezANOVA(statdata2,dv=activity,wid=subject,within=list(BothMem,Emotion),type=3,detailed=TRUE)
+print(anova_mod2$ANOVA)
+
+statdata3 <- subset(actdata.rec,Region=="PHC")
+anova_mod3<-ezANOVA(statdata3,dv=activity,wid=subject,within=list(BothMem,Emotion),type=3,detailed=TRUE)
+print(anova_mod3$ANOVA)
+
+rm(statdata1,statdata2,statdata3,anova_mod1,anova_mod2,anova_mod3)
+```
+
+
+## Amygdala vs whole hippocampus
+```{r, message=FALSE, warning=FALSE}
+statdata1 <- subset(actdata.rec,RegionAP=="wholeHipp" | Region=="Amyg") 
+summary(droplevels(statdata1$Region)) # Note that hemisphere is still included but ezANOVA will average them
+anova_mod1<-ezANOVA(statdata1,dv=activity,wid=subject,within=list(BothMem,Emotion,Region),type=3,detailed=TRUE)
+print(anova_mod1$ANOVA)
+
+statdata2 <- subset(actdata.rec,RegionAP=="wholeHipp" )
+anova_mod2<-ezANOVA(statdata2,dv=activity,wid=subject,within=list(BothMem,Emotion),type=3,detailed=TRUE)
+print(anova_mod2$ANOVA)
+
+statdata3 <- subset(actdata.rec,Region=="Amyg")
+anova_mod3<-ezANOVA(statdata3,dv=activity,wid=subject,within=list(BothMem,Emotion),type=3,detailed=TRUE)
+print(anova_mod3$ANOVA)
+
+rm(statdata1,statdata2,statdata3,anova_mod1,anova_mod2,anova_mod3)
+```
+
+## Subregions within amygdala
+```{r, message=FALSE, warning=FALSE}
+statdata1 <- subset(actdata.rec,MainRegion=="Amyg")
+summary(droplevels(statdata1$Region))
+anova_mod1<-ezANOVA(statdata1,dv=activity,wid=subject,within=list(BothMem,Emotion,Region),type=3,detailed=TRUE)
+print(anova_mod1)
+
+statdata2 <- subset(actdata.rec,Region=="BasolatAmyg")
+anova_mod2<-ezANOVA(statdata2,dv=activity,wid=subject,within=list(BothMem,Emotion),type=3,detailed=TRUE)
+print(anova_mod2$ANOVA)
+
+statdata3 <- subset(actdata.rec,Region=="CentralAmyg")
+anova_mod3<-ezANOVA(statdata3,dv=activity,wid=subject,within=list(BothMem,Emotion),type=3,detailed=TRUE)
+print(anova_mod3$ANOVA)
+
+statdata4 <- subset(actdata.rec,Region=="CorticalAmyg")
+anova_mod4<-ezANOVA(statdata4,dv=activity,wid=subject,within=list(BothMem,Emotion),type=3,detailed=TRUE)
+print(anova_mod4$ANOVA)
+
+statdata5 <- subset(actdata.rec,Region=="MedialAmyg")
+anova_mod5<-ezANOVA(statdata5,dv=activity,wid=subject,within=list(BothMem,Emotion),type=3,detailed=TRUE)
+print(anova_mod5$ANOVA)
+
+rm(statdata1,statdata2,statdata3,statdata4,statdata5,anova_mod1,anova_mod2,anova_mod3,anova_mod4,anova_mod5)
+
+```
+
+## Posterior vs anterior hippocampus
+```{r, message=FALSE, warning=FALSE}
+statdata1 <- subset(actdata.rec,(RegionAP=="wholeHipp.head" | RegionAP=="wholeHipp.body"))
+summary(droplevels(statdata1$RegionAP))
+anova_mod1<-ezANOVA(statdata1,dv=activity,wid=subject,within=list(BothMem,Emotion,RegionAP),type=3,detailed=TRUE)
+print(anova_mod1$ANOVA)
+
+statdata2 <- subset(actdata.rec,(RegionAP=="wholeHipp.head") )
+anova_mod2<-ezANOVA(statdata2,dv=activity,wid=subject,within=list(BothMem,Emotion),type=3,detailed=TRUE)
+print(anova_mod2$ANOVA)
+
+statdata3 <- subset(actdata.rec,(RegionAP=="wholeHipp.body" ) )
+anova_mod3<-ezANOVA(statdata3,dv=activity,wid=subject,within=list(BothMem,Emotion),type=3,detailed=TRUE)
+print(anova_mod3$ANOVA)
+
+rm(statdata1,statdata2,statdata3,anova_mod1,anova_mod2,anova_mod3)
+
+```
+
+## Subregions within posterior hippocampus
+```{r, message=FALSE, warning=FALSE}
+statdata1 <- subset(actdata.rec,MainRegion=="Hipp")
+summary(droplevels(statdata1$Region))
+anova_mod<-ezANOVA(statdata1,dv=activity,wid=subject,within=list(BothMem,Emotion,Region),type=3,detailed=TRUE)
+print(anova_mod)
+
+statdata2 <- subset(actdata.rec,Region=="CA1")
+anova_mod2<-ezANOVA(statdata2,dv=activity,wid=subject,within=list(BothMem,Emotion),type=3,detailed=TRUE)
+print(anova_mod2$ANOVA)
+
+statdata3 <- subset(actdata.rec,Region=="CA23DG")
+anova_mod3<-ezANOVA(statdata3,dv=activity,wid=subject,within=list(BothMem,Emotion),type=3,detailed=TRUE)
+print(anova_mod3$ANOVA)
+
+statdata4 <- subset(actdata.rec,Region=="subiculum")
+anova_mod4<-ezANOVA(statdata4,dv=activity,wid=subject,within=list(BothMem,Emotion),type=3,detailed=TRUE)
+print(anova_mod4$ANOVA)
+
+rm(statdata1,anova_mod,statdata2,statdata3,statdata4,anova_mod2,anova_mod3,anova_mod4)
+
+```
+
+
+## PRC vs PHC
+```{r, message=FALSE, warning=FALSE}
+statdata1 <- subset(actdata.rec,(Region=="PRC" | Region=="PHC") )
+anova_mod<-ezANOVA(statdata1,dv=activity,wid=subject,within=list(BothMem,Emotion,Region),type=3,detailed=TRUE)
+print(anova_mod$ANOVA)
+
+statdata2 <- subset(actdata.rec,(Region=="PRC") )
+anova_mod2<-ezANOVA(statdata2,dv=activity,wid=subject,within=list(BothMem,Emotion),type=3,detailed=TRUE)
+print(anova_mod2$ANOVA)
+
+statdata3 <- subset(actdata.rec,Region=="PHC" )
+anova_mod3<-ezANOVA(statdata3,dv=activity,wid=subject,within=list(BothMem,Emotion),type=3,detailed=TRUE)
+print(anova_mod3$ANOVA)
+
+rm(statdata1,statdata2,statdata3,anova_mod1,anova_mod2,anova_mod3)
+
+```
+
+
+
+# ROI maps
+
+```{r defineMapFunc}
+plotROImap <- function(values,colornames) {
+  
+  ids <- factor(c("Amyg","PRC","PHC","wholeHipp.head","wholeHipp.body","subiculum.body","CA1.body","CA23DG.body","CorticalAmyg","CentralAmyg","MedialAmyg","BasolatAmyg"))
+  nid <- length(ids)
+  
+  # Define polygon coordinates (in this case, 4 each for a rectangle)
+  positions <- data.frame(
+    id = rep(ids, each = 4),
+    order = rep(c(1,2,3,4),nid),
+    x = c(1,2,2,1,
+          1.5,3,3,1.5,
+          3,4,4,3,
+          2,3,3,2,
+          3,4,4,3,
+          3,4,4,3,
+          3,4,4,3,
+          3,4,4,3,
+          1,2,2,1,
+          1,2,2,1,
+          1,2,2,1,
+          1,2,2,1),
+    y = c(2,2,3,3,
+          1,1,2,2,
+          1,1,2,2,
+          2,2,3,3,
+          2,2,3,3,
+          2,2,2.3333,2.3333,
+          2.3333,2.3333,2.6666,2.6666,
+          2.6666,2.6666,3,3,
+          2,2,2.25,2.25,
+          2.25,2.25,2.5,2.5,
+          2.5,2.5,2.75,2.75,
+          2.75,2.75,3,3)
+  )
+  
+  # Calculate midpoint of each poly for label
+  positions %>%
+    group_by(id) %>%
+    summarize(label_x = mean(x),
+              label_y = mean(y)) %>%
+    left_join(values) %>%
+    filter(!is.na(value) & !is.null(value) & value!="NULL") -> values
+  
+  # Merge id & label info with positions
+  datapoly <- merge(values, positions, by=c("id")) %>%
+    arrange(id,order) %>%
+    ungroup()
+  
+  # Prettier labels
+  values$id[values$id=="wholeHipp.head"] <- "Hipp.ant"
+  values$id[values$id=="wholeHipp.body"] <- "Hipp.post"
+  
+  values$id[values$id=="BasolatAmyg"] <- "Amyg.basolateral"
+  values$id[values$id=="MedialAmyg"] <- "Amyg.basomedial"
+  values$id[values$id=="CentralAmyg"] <- "Amyg.centromedial"
+  values$id[values$id=="CorticalAmyg"] <- "Amyg.cortical"
+
+  # Plot polygons with values coding fill color
+  p <- ggplot(datapoly, aes(x=x, y=y)) + geom_polygon(colour="black",aes(fill=value, group=id)) +
+    theme_minimal(20) + 
+    theme(axis.text = element_blank(),axis.ticks = element_blank()) +
+    theme(panel.grid.major = element_blank(),panel.grid.minor=element_blank()) + 
+    xlab('') + ylab('') + 
+    scale_fill_gradient(low=colornames[1],high=colornames[2],limits=c(0,NA),na.value="gray60",name="effect size") + 
+    geom_text(data=values,size=8,aes(label=id,x=label_x,y=label_y))
+
+  return(p)
+}
+```
+
+## Get stats summary info for plots
+
+```{r, message=FALSE, warning=FALSE}
+
+getAnovaEffectSize <- function(df,effectrow) {
+  df <- data.frame(df) # bc ezANOVA hates grouped dataframes
+  anova_mod <- ezANOVA(df,dv=activity,wid=subject,within=list(BothMem,Emotion),type=3,detailed=TRUE)
+  effectsize <- anova_mod$ANOVA[9][[1]][effectrow]
+  return(effectsize)
+}
+
+actdata.rec %>%
+  filter(RegionAP %in% c("Amyg","wholeHipp.head","wholeHipp.body","PHC","PRC")) %>%
+  group_by(RegionAP) %>%
+  do(memory = getAnovaEffectSize(.,1),
+     source = getAnovaEffectSize(.,2),
+     emotion = getAnovaEffectSize(.,3)) %>%
+  unnest() -> effectsizes.roi
+
+actdata.rec %>%
+  filter(RegionAP %in% c("CorticalAmyg","CentralAmyg","MedialAmyg","BasolatAmyg","CA1.body","CA23DG.body","subiculum.body","wholeHipp.head","PHC","PRC")) %>%
+  group_by(RegionAP) %>%
+  do(memory = getAnovaEffectSize(.,1),
+     source = getAnovaEffectSize(.,2),
+     emotion = getAnovaEffectSize(.,3)) %>%
+  unnest() -> effectsizes.roi.subreg
+
+print(effectsizes.roi)
+print(effectsizes.roi.subreg)
+
+```
+
+## Major subdivisions
+
+```{r, fig.height=2, fig.width=6, message=FALSE, warning=FALSE}
+map.mem <- data.frame(id=as.character(effectsizes.roi$RegionAP),value=as.numeric(effectsizes.roi$memory))
+plotROImap(map.mem,c('white','orange')) + ggtitle("Recollection-related activity")
+map.emo <- data.frame(id=as.character(effectsizes.roi$RegionAP),value=as.numeric(effectsizes.roi$emotion))
+plotROImap(map.emo,c('white','tomato')) + ggtitle("Effect of emotion on recollection-related activity")
+map.src <- data.frame(id=as.character(effectsizes.roi$RegionAP),value=as.numeric(effectsizes.roi$source))
+plotROImap(map.src,c('white','skyblue1')) + ggtitle("Effect of context encoding on recollection-related activity")
+
+```
+
+## With subregions
+```{r, fig.height=2, fig.width=6, message=FALSE, warning=FALSE}
+map.mem2 <- data.frame(id=as.character(effectsizes.roi.subreg$RegionAP),value=as.numeric(effectsizes.roi.subreg$memory))
+plotROImap(map.mem2,c('white','orange')) + ggtitle("Recollection-related activity")
+map.emo2 <- data.frame(id=as.character(effectsizes.roi.subreg$RegionAP),value=as.numeric(effectsizes.roi.subreg$emotion))
+plotROImap(map.emo2,c('white','tomato')) + ggtitle("Effect of emotion on recollection-related activity")
+map.src2 <- data.frame(id=as.character(effectsizes.roi.subreg$RegionAP),value=as.numeric(effectsizes.roi.subreg$source))
+plotROImap(map.src2,c('white','skyblue1')) + ggtitle("Effect of context encoding on recollection-related activity")
+
+```

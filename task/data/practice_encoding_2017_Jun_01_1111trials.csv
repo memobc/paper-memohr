@@ -1,0 +1,12 @@
+Category,FixISI,ConList,CB,ConLabel,ImageFile,EmotionType,RunID,ConID,BlockRep,ID,TrialType,n,response.keys_raw,order
+cat,4.855,1,A,within SF?,PracticeStim/cat1.jpg,None,1,A,1,cat1,Old,1.0,,0.0
+dog,0.589,1,A,within SF?,PracticeStim/dog1.jpg,None,1,A,1,dog1,Old,1.0,,1.0
+dog,1.755,4,A,prof photog?,PracticeStim/dog2.jpg,None,1,D,1,dog2,Old,1.0,,2.0
+cat,3.218,4,A,prof photog?,PracticeStim/cat2.jpg,None,1,D,1,cat2,Old,1.0,,3.0
+
+extraInfo
+date,2017_Jun_01_1111
+frameRate,59.7792575025
+expName,encoding
+participant,practice
+condition,A

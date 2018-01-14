@@ -1,0 +1,292 @@
+---
+title: "MemoHR fMRI ROI - Predict memory outcomes"
+author: "Maureen Ritchey"
+output:
+  html_notebook:
+    code_folding: hide
+    number_sections: yes
+    theme: cosmo
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+  html_document:
+    code_folding: hide
+    number_sections: yes
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+---
+
+```{r init, message=FALSE, warning=FALSE, include=FALSE}
+library('tidyverse')
+library('ez')
+library('stringr')
+library('lme4')
+library('visreg')
+library('lattice')
+options(digits=3)
+options(scipen = 999)
+```
+
+
+# Load & Process data
+```{r, message=FALSE, warning=FALSE}
+
+savepath <- '../../Analysis/ROI_estimates/'
+behavpath <- '../../Data/Behavioral/summary/'
+
+## Load data from csv
+### Activation estimates
+actdata<-read.csv(paste0(savepath,'cons_ashs_betas_ItemSourceDM_rf_new_ST.csv')) # created with output_roi_cons script in Matlab
+
+### ROI metadata
+roidata<-read.csv('../../Analysis/ROI_estimates/roi_info.csv') # contains various labeling schemes for ROIs
+actdata <- merge(actdata,roidata,by="roi_file")
+rm(roidata)
+actdata$RegionAP <- droplevels(actdata$RegionAP)
+actdata$Region <- droplevels(actdata$Region)
+
+## Get condition info from beta descriptions
+actdata$contrast <- as.character(actdata$contrast)
+actdata %>%
+  mutate(emotion = factor(str_sub(contrast,29,31))) %>%
+  filter(emotion!="Oth") %>%
+  mutate(session = factor(str_sub(contrast,26,26)),
+         emotion = factor(str_sub(contrast,29,31)),
+         memory = str_sub(contrast,32,35)) %>%
+  separate(memory,c("memory","tmp"),sep="_")  %>% # this is the line that throws the "too few values" warning - not a real issue
+  select(roi_file,subject,contrast,activity,Region,Hemisphere,RegionAP,emotion,session,memory) -> actdata
+
+actdata %>%
+  mutate(memory = factor(ifelse(memory=="-SI","R-SI",memory),
+                         levels=c("R-SC","R-SI","K","M")),
+         recmem = factor(ifelse(memory=="R-SI"|memory=="R-SC","Rec","Non-Rec"),levels=c("Non-Rec","Rec")),
+         sourcemem = factor(ifelse(memory=="R-SI","SI",
+                                ifelse(memory=="R-SC","SC",NA)),levels=c("SI","SC"))) -> actdata 
+str(actdata)
+
+actdata %>%
+  group_by(subject,roi_file) %>%
+  mutate(meanact = mean(activity),
+         sdact = sd(activity),
+         activity.z = (activity - meanact)/sdact,
+         activity.z = ifelse(abs(activity.z)>3,NA,activity.z)) -> actdata # remove outliers
+
+## Average over hemispheres
+actdata %>%
+  group_by(subject,RegionAP,session,emotion,memory,recmem,sourcemem,contrast) %>%
+  summarize(activity = mean(activity.z))  -> avgdata 
+
+## Cast RegionAP to columns
+avgdata %>%
+  spread(RegionAP,activity) -> avgdata.roi
+
+## Define colors
+emocolor <- '#d01c8b'
+neucolor <- '#4dac26'
+
+```
+
+# Basic plots
+## Sanity checks
+
+To make sure averaged results look roughly the way that I expect from prior analyses
+
+```{r}
+
+avgdata %>%
+  group_by(subject,memory,emotion,RegionAP) %>%
+  summarize(activity = mean(activity)) %>%
+  ggplot(aes(x=memory,y=activity,color=emotion)) + geom_boxplot() + facet_grid(.~RegionAP)
+
+```
+
+To check out distributions
+
+```{r}
+avgdata.roi %>%
+  ggplot(aes(x=Amyg,y=PRC)) + facet_grid(.~recmem) + stat_smooth(method="lm",se=FALSE) + geom_point(aes(color=subject)) 
+
+```
+
+
+
+# Regression predicting recollection outcomes
+```{r, message=FALSE, warning=FALSE}
+avgdata.roi %>%
+  filter(!is.na(recmem)) %>%
+  filter(!is.na(Amyg+PRC+PHC+wholeHipp+wholeHipp.head+wholeHipp.body)) -> avgdata.roi.rec # this limits to trials with intact data
+```
+
+## Each region alone
+```{r}
+
+# Set up base models, no emotion
+intonly <- glmer(recmem ~ (1|subject/session),data=avgdata.roi.rec,family=binomial)
+
+amyg <- glmer(recmem ~ Amyg + (1|subject/session),data=avgdata.roi.rec,family=binomial)
+hipp <- glmer(recmem ~ wholeHipp + (1|subject/session),data=avgdata.roi.rec,family=binomial)
+prc <- glmer(recmem ~ PRC + (1|subject/session),data=avgdata.roi.rec,family=binomial)
+phc <- glmer(recmem ~ PHC + (1|subject/session),data=avgdata.roi.rec,family=binomial)
+ahipp <- glmer(recmem ~ wholeHipp.head + (1|subject/session),data=avgdata.roi.rec,family=binomial)
+
+anova(intonly,amyg)
+anova(intonly,hipp)
+anova(intonly,prc)
+anova(intonly,phc)
+
+# make sure that the amygdala~memory effect is modulated by emotion (which it should be)
+amygemo <- glmer(recmem ~ Amyg + emotion + (1|subject/session),data=avgdata.roi.rec,family=binomial)
+amygemoxx <- glmer(recmem ~ Amyg*emotion + (1|subject/session),data=avgdata.roi.rec,family=binomial)
+anova(amygemo,amygemoxx)
+
+# Set up rest of base models, with emotion
+hippemo <- glmer(recmem ~ wholeHipp + emotion + (1|subject/session),data=avgdata.roi.rec,family=binomial)
+prcemo <- glmer(recmem ~ PRC + emotion + (1|subject/session),data=avgdata.roi.rec,family=binomial)
+phcemo <- glmer(recmem ~ PHC + emotion + (1|subject/session),data=avgdata.roi.rec,family=binomial)
+ahippemo <- glmer(recmem ~ wholeHipp.head + emotion + (1|subject/session),data=avgdata.roi.rec,family=binomial)
+
+hippemoxx <- glmer(recmem ~ wholeHipp*emotion + (1|subject/session),data=avgdata.roi.rec,family=binomial)
+prcemoxx <- glmer(recmem ~ PRC*emotion + (1|subject/session),data=avgdata.roi.rec,family=binomial)
+phcemoxx <- glmer(recmem ~ PHC*emotion + (1|subject/session),data=avgdata.roi.rec,family=binomial)
+ahippemoxx <- glmer(recmem ~ wholeHipp.head*emotion + (1|subject/session),data=avgdata.roi.rec,family=binomial)
+ 
+
+```
+
+## Amyg combined with others
+
+### PRC
+#### Additive effects of amygdala & PRC
+```{r}
+
+amygprcemo <- glmer(recmem ~ Amyg*emotion + PRC*emotion + (1|subject/session),data=avgdata.roi.rec,family=binomial)
+anova(amygemoxx,amygprcemo) # additive effect of PRC
+anova(prcemoxx,amygprcemo) # additive effect of Amyg
+
+```
+
+Conclusion: Subsequent recollection is predicted well by amygdala and its interaction with emotion, but it improves when PRC is added. 
+
+#### Interactive effects of amygdala & PRC
+```{r}
+
+amygprcxxemo <- glmer(recmem ~ Amyg*emotion + PRC*emotion + Amyg*PRC + (1|subject/session),data=avgdata.roi.rec,family=binomial)
+anova(amygprcemo,amygprcxxemo)
+
+amygprcemoxxx <- glmer(recmem ~ Amyg*emotion*PRC + (1|subject/session),data=avgdata.roi.rec,family=binomial)
+anova(amygprcxxemo,amygprcemoxxx)
+
+```
+Conclusion: Knowing the interaction of amygdala & PRC improves the model. There is not a three-way interaction with emotion (i.e., the amyg-PRC interaction is similar for negative & neutral).
+
+#### Visualization
+```{r, fig.height=2, fig.width=4}
+
+trellis.par.set(strip.background=list(col="gray90"))
+visreg(amygprcxxemo, "PRC", scale="response",by="Amyg",cond=list(emotion="Emo"),rug=2,
+       xlab="PRC activity", ylab="P(subsequent recollection)",
+       breaks=c(-1,0,1),strip.names=c("low amygdala activity",'medium amygdala activity','high amygdala activity'),
+       line=list(col=c(emocolor)))
+
+trellis.par.set(strip.background=list(col="gray90"))
+visreg(amygprcxxemo, "PRC", scale="response",by="Amyg",cond=list(emotion="Neu"),rug=2,
+       xlab="PRC activity", ylab="P(subsequent recollection)",
+       breaks=c(-1,0,1),strip.names=c("low amygdala activity",'medium amygdala activity','high amygdala activity'),
+       line=list(col=c(neucolor)))
+
+# can't seem to change rug color separately from line color - creating another version to include in overlay
+trellis.par.set(strip.background=list(col="gray90"))
+visreg(amygprcxxemo, "PRC", scale="response",by="Amyg",cond=list(emotion="Neu"),rug=2,
+       xlab="PRC activity", ylab="P(subsequent recollection)",
+       breaks=c(-1,0,1),strip.names=c("low amygdala activity",'medium amygdala activity','high amygdala activity'),
+       line=list(col=c("gray50")))
+
+```
+
+### Hippocampus
+```{r, fig.height=2, fig.width=4}
+
+amyghipp <- glmer(recmem ~ Amyg + wholeHipp + (1|subject/session),data=avgdata.roi.rec,family=binomial)
+amyghippxx <- glmer(recmem ~ Amyg*wholeHipp  + (1|subject/session),data=avgdata.roi.rec,family=binomial)
+anova(amyghipp,amyghippxx)
+
+amyghippemo <- glmer(recmem ~ Amyg*emotion + wholeHipp*emotion + (1|subject/session),data=avgdata.roi.rec,family=binomial)
+amyghippemoxx <- glmer(recmem ~ Amyg*wholeHipp*emotion + (1|subject/session),data=avgdata.roi.rec,family=binomial)
+anova(amyghippemo,amyghippemoxx)
+
+visreg(amyghippxx, "wholeHipp", scale="response",by="Amyg",rug=2,xlab="Hippocampal activity", ylab="P(subsequent recollection)",
+       breaks=c(-1,0,1),strip.names=c("low amygdala activity",'medium amygdala activity','high amygdala activity'))
+# visreg(amyghippxx, "Amyg", scale="response",by="wholeHipp",rug=2,xlab="Amygdala activity", ylab="P(subsequent recollection)",
+#        breaks=c(-1,0,1))
+
+
+```
+
+The amygdala-hippocampal interaction is not significant, with or without emotion.
+
+
+# Regression predicting source memory
+```{r}
+avgdata.roi %>%
+  filter(!is.na(sourcemem))  %>%
+  filter(!is.na(Amyg+PRC+PHC+wholeHipp+wholeHipp.head+wholeHipp.body)) -> avgdata.roi.src # this limits to only recollection trials with intact data
+```
+
+## Each region alone
+```{r}
+
+intonly <- glmer(sourcemem ~  (1|subject/session),data=avgdata.roi.src,family=binomial)
+
+amyg <- glmer(sourcemem ~ Amyg + (1|subject/session),data=avgdata.roi.src,family=binomial)
+hipp <- glmer(sourcemem ~ wholeHipp + (1|subject/session),data=avgdata.roi.src,family=binomial)
+prc <- glmer(sourcemem ~ PRC + (1|subject/session),data=avgdata.roi.src,family=binomial)
+phc <- glmer(sourcemem ~ PHC + (1|subject/session),data=avgdata.roi.src,family=binomial)
+
+anova(intonly,amyg)
+anova(intonly,hipp)
+anova(intonly,prc)
+anova(intonly,phc)
+
+```
+
+## Amyg combined with others
+### Hippocampus
+```{r}
+
+amyghipp <- glmer(sourcemem ~ Amyg + wholeHipp + (1|subject/session),data=avgdata.roi.src,family=binomial)
+amyghippxx <- glmer(sourcemem ~ Amyg*wholeHipp  + (1|subject/session),data=avgdata.roi.src,family=binomial)
+anova(amyghipp,amyghippxx)
+
+amyghippemo <- glmer(sourcemem ~ Amyg*emotion + wholeHipp*emotion + (1|subject/session),data=avgdata.roi.src,family=binomial)
+amyghippemo2 <- glmer(sourcemem ~ Amyg*emotion + wholeHipp*emotion + Amyg*wholeHipp  + (1|subject/session),data=avgdata.roi.src,family=binomial)
+anova(amyghippemo,amyghippemo2)
+
+amyghippemoxx <- glmer(sourcemem ~ Amyg*wholeHipp*emotion  + (1|subject/session),data=avgdata.roi.src,family=binomial)
+anova(amyghippemo2,amyghippemoxx) # does adding the 3-way interaction add anything beyond the simple amyg-hipp intx?
+
+```
+
+Conclusion: Amygdala & hippocampus interact to support subsequent source memory, but there's not a three-way interaction with emotion.
+
+### Visualization
+```{r, fig.height=2, fig.width=4}
+trellis.par.set(strip.background=list(col="gray90"))
+visreg(amyghippemoxx, "wholeHipp", scale="response",by="Amyg",cond=list(emotion="Emo"),rug=2,
+       xlab="Hippocampal activity", ylab="P(subsequent source)",
+       breaks=c(-1,0,1),strip.names=c("low amygdala activity",'medium amygdala activity','high amygdala activity'),
+       line=list(col=emocolor))
+
+trellis.par.set(strip.background=list(col="gray90"))
+visreg(amyghippemoxx, "wholeHipp", scale="response",by="Amyg",cond=list(emotion="Neu"),rug=2,
+       xlab="Hippocampal activity", ylab="P(subsequent source)",
+       breaks=c(-1,0,1),strip.names=c("low amygdala activity",'medium amygdala activity','high amygdala activity'),
+       line=list(col=neucolor))
+
+# can't seem to change rug color separately from line color - creating another version to include in overlay
+trellis.par.set(strip.background=list(col="gray90"))
+visreg(amyghippemoxx, "wholeHipp", scale="response",by="Amyg",cond=list(emotion="Neu"),rug=2,
+       xlab="Hippocampal activity", ylab="P(subsequent source)",
+       breaks=c(-1,0,1),strip.names=c("low amygdala activity",'medium amygdala activity','high amygdala activity'),
+       line=list(col="gray50"))
+```

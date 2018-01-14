@@ -1,0 +1,265 @@
+ID,Category,EmotionType,RunID,ConList,ConID,ConLabel,BlockRep,TrialType,CB,ImageFile,FixISI
+Objects_219_h,Objects,Neutral,1,1,neu1,within SF?,1,Old,A,Stimuli/Objects_219_h.jpg,0.977
+Objects_209_h,Objects,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Objects_209_h.jpg,0.5
+Faces_111_h,Faces,Neutral,5,2,neu2,professional photo?,1,Old,A,Stimuli/Faces_111_h.jpg,0.824
+Faces_203_h,Faces,Neutral,4,1,neu1,within SF?,1,Old,A,Stimuli/Faces_203_h.jpg,1.151
+Faces_047_h,Faces,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_047_h.jpg,0.5
+Faces_265_h,Faces,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_265_h.jpg,0.5
+Faces_059_h,Faces,Neutral,3,1,neu1,within SF?,1,Old,A,Stimuli/Faces_059_h.jpg,3.745
+Animals_013_h,Animals,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Animals_013_h.jpg,0.5
+Objects_043_h,Objects,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Objects_043_h.jpg,0.5
+Objects_200_h,Objects,Neutral,4,2,neu2,professional photo?,1,Old,A,Stimuli/Objects_200_h.jpg,0.798
+Objects_258_h,Objects,Neutral,6,1,neu1,within SF?,2,Old,A,Stimuli/Objects_258_h.jpg,3.52
+Objects_223_h,Objects,Neutral,1,2,neu2,professional photo?,2,Old,A,Stimuli/Objects_223_h.jpg,1.234
+Faces_315_h,Faces,Neutral,6,2,neu2,professional photo?,1,Old,A,Stimuli/Faces_315_h.jpg,2.814
+Animals_221_h,Animals,Negative,2,4,emo2,professional photo?,2,Old,A,Stimuli/Animals_221_h.jpg,1.496
+Faces_279_h,Faces,Negative,6,3,emo1,within SF?,1,Old,A,Stimuli/Faces_279_h.jpg,3.654
+Objects_308_h,Objects,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Objects_308_h.jpg,0.5
+Faces_166_h,Faces,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_166_h.jpg,0.5
+Faces_032_h,Faces,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_032_h.jpg,0.5
+Faces_102_h,Faces,Neutral,1,2,neu2,professional photo?,2,Old,A,Stimuli/Faces_102_h.jpg,2.087
+Objects_021_v,Objects,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Objects_021_v.jpg,0.5
+Objects_231_h,Objects,Neutral,1,1,neu1,within SF?,1,Old,A,Stimuli/Objects_231_h.jpg,0.834
+Faces_033_h,Faces,Negative,3,3,emo1,within SF?,2,Old,A,Stimuli/Faces_033_h.jpg,2.679
+Objects_268_h,Objects,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Objects_268_h.jpg,0.5
+Animals_214_h,Animals,Neutral,2,1,neu1,within SF?,1,Old,A,Stimuli/Animals_214_h.jpg,0.977
+Animals_077_h,Animals,Negative,2,4,emo2,professional photo?,1,Old,A,Stimuli/Animals_077_h.jpg,0.864
+Objects_126_h,Objects,Negative,1,4,emo2,professional photo?,2,Old,A,Stimuli/Objects_126_h.jpg,1.755
+Faces_309_h,Faces,Neutral,2,2,neu2,professional photo?,2,Old,A,Stimuli/Faces_309_h.jpg,0.589
+Animals_150_h,Animals,Neutral,2,2,neu2,professional photo?,1,Old,A,Stimuli/Animals_150_h.jpg,1.262
+Animals_139_h,Animals,Neutral,3,1,neu1,within SF?,1,Old,A,Stimuli/Animals_139_h.jpg,2.087
+Animals_034_h,Animals,Negative,6,4,emo2,professional photo?,1,Old,A,Stimuli/Animals_034_h.jpg,0.977
+Objects_125_h,Objects,Negative,5,4,emo2,professional photo?,1,Old,A,Stimuli/Objects_125_h.jpg,1.755
+Faces_034_h,Faces,Negative,6,4,emo2,professional photo?,1,Old,A,Stimuli/Faces_034_h.jpg,0.51
+Objects_016_h,Objects,Neutral,5,1,neu1,within SF?,1,Old,A,Stimuli/Objects_016_h.jpg,3.961
+Animals_063_h,Animals,Negative,1,4,emo2,professional photo?,1,Old,A,Stimuli/Animals_063_h.jpg,0.589
+Animals_162_h,Animals,Neutral,5,2,neu2,professional photo?,2,Old,A,Stimuli/Animals_162_h.jpg,0.834
+Faces_021_h,Faces,Negative,1,4,emo2,professional photo?,2,Old,A,Stimuli/Faces_021_h.jpg,0.824
+Objects_218_h,Objects,Negative,2,4,emo2,professional photo?,1,Old,A,Stimuli/Objects_218_h.jpg,1.922
+Objects_170_v,Objects,Negative,6,4,emo2,professional photo?,2,Old,A,Stimuli/Objects_170_v.jpg,0.798
+Animals_104_h,Animals,Neutral,3,1,neu1,within SF?,2,Old,A,Stimuli/Animals_104_h.jpg,3.654
+Faces_184_h,Faces,Neutral,5,1,neu1,within SF?,2,Old,A,Stimuli/Faces_184_h.jpg,1.997
+Faces_341_h,Faces,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_341_h.jpg,0.5
+Faces_030_h,Faces,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_030_h.jpg,0.5
+Faces_010_h,Faces,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_010_h.jpg,0.5
+Animals_001_h,Animals,Negative,5,4,emo2,professional photo?,1,Old,A,Stimuli/Animals_001_h.jpg,3.52
+Faces_298_h,Faces,Negative,6,4,emo2,professional photo?,2,Old,A,Stimuli/Faces_298_h.jpg,0.623
+Animals_073_h,Animals,Negative,5,3,emo1,within SF?,2,Old,A,Stimuli/Animals_073_h.jpg,3.506
+Faces_285_h,Faces,Negative,2,3,emo1,within SF?,1,Old,A,Stimuli/Faces_285_h.jpg,2.922
+Animals_174_h,Animals,Neutral,6,2,neu2,professional photo?,2,Old,A,Stimuli/Animals_174_h.jpg,0.559
+Animals_207_h,Animals,Negative,5,4,emo2,professional photo?,1,Old,A,Stimuli/Animals_207_h.jpg,0.589
+Objects_087_h,Objects,Neutral,1,1,neu1,within SF?,2,Old,A,Stimuli/Objects_087_h.jpg,5.089
+Animals_119_h,Animals,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Animals_119_h.jpg,0.5
+Faces_200_h,Faces,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_200_h.jpg,0.5
+Faces_164_h,Faces,Negative,2,3,emo1,within SF?,2,Old,A,Stimuli/Faces_164_h.jpg,1.997
+Objects_023_v,Objects,Negative,5,3,emo1,within SF?,1,Old,A,Stimuli/Objects_023_v.jpg,0.559
+Objects_148_h,Objects,Negative,2,4,emo2,professional photo?,1,Old,A,Stimuli/Objects_148_h.jpg,1.755
+Faces_284_h,Faces,Negative,3,3,emo1,within SF?,2,Old,A,Stimuli/Faces_284_h.jpg,3.582
+Faces_188_h,Faces,Neutral,5,1,neu1,within SF?,2,Old,A,Stimuli/Faces_188_h.jpg,3.745
+Objects_318_h,Objects,Negative,5,3,emo1,within SF?,1,Old,A,Stimuli/Objects_318_h.jpg,1.922
+Faces_366_h,Faces,Negative,1,4,emo2,professional photo?,1,Old,A,Stimuli/Faces_366_h.jpg,3.582
+Faces_053_h,Faces,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_053_h.jpg,0.5
+Faces_180_h,Faces,Neutral,2,1,neu1,within SF?,2,Old,A,Stimuli/Faces_180_h.jpg,3.506
+Faces_152_h,Faces,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_152_h.jpg,0.5
+Faces_367_h,Faces,Negative,2,3,emo1,within SF?,1,Old,A,Stimuli/Faces_367_h.jpg,0.834
+Faces_270_h,Faces,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_270_h.jpg,0.5
+Objects_182_v,Objects,Negative,3,3,emo1,within SF?,2,Old,A,Stimuli/Objects_182_v.jpg,3.52
+Objects_173_h,Objects,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Objects_173_h.jpg,0.5
+Objects_320_h,Objects,Neutral,2,2,neu2,professional photo?,2,Old,A,Stimuli/Objects_320_h.jpg,3.52
+Objects_247_h,Objects,Neutral,1,2,neu2,professional photo?,2,Old,A,Stimuli/Objects_247_h.jpg,1.262
+Objects_151_h,Objects,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Objects_151_h.jpg,0.5
+Objects_093_h,Objects,Neutral,3,1,neu1,within SF?,2,Old,A,Stimuli/Objects_093_h.jpg,5.089
+Objects_020_h,Objects,Neutral,3,1,neu1,within SF?,2,Old,A,Stimuli/Objects_020_h.jpg,1.151
+Animals_097_h,Animals,Neutral,6,1,neu1,within SF?,2,Old,A,Stimuli/Animals_097_h.jpg,1.151
+Faces_146_h,Faces,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_146_h.jpg,0.5
+Animals_068_h,Animals,Negative,3,3,emo1,within SF?,1,Old,A,Stimuli/Animals_068_h.jpg,3.961
+Animals_056_h,Animals,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Animals_056_h.jpg,0.5
+Objects_259_h,Objects,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Objects_259_h.jpg,0.5
+Faces_208_h,Faces,Neutral,1,2,neu2,professional photo?,1,Old,A,Stimuli/Faces_208_h.jpg,3.506
+Faces_312_h,Faces,Neutral,6,2,neu2,professional photo?,1,Old,A,Stimuli/Faces_312_h.jpg,1.922
+Objects_137_h,Objects,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Objects_137_h.jpg,0.5
+Faces_019_h,Faces,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_019_h.jpg,0.5
+Faces_372_h,Faces,Negative,5,4,emo2,professional photo?,1,Old,A,Stimuli/Faces_372_h.jpg,3.654
+Animals_012_h,Animals,Negative,1,3,emo1,within SF?,2,Old,A,Stimuli/Animals_012_h.jpg,0.864
+Objects_001_h,Objects,Negative,2,3,emo1,within SF?,1,Old,A,Stimuli/Objects_001_h.jpg,0.824
+Animals_054_h,Animals,Negative,4,4,emo2,professional photo?,2,Old,A,Stimuli/Animals_054_h.jpg,5.089
+Objects_039_h,Objects,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Objects_039_h.jpg,0.5
+Faces_355_h,Faces,Neutral,2,2,neu2,professional photo?,2,Old,A,Stimuli/Faces_355_h.jpg,1.237
+Objects_112_h,Objects,Neutral,2,1,neu1,within SF?,1,Old,A,Stimuli/Objects_112_h.jpg,3.654
+Faces_283_h,Faces,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_283_h.jpg,0.5
+Faces_072_h,Faces,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_072_h.jpg,0.5
+Objects_110_v,Objects,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Objects_110_v.jpg,0.5
+Objects_011_h,Objects,Negative,5,3,emo1,within SF?,1,Old,A,Stimuli/Objects_011_h.jpg,1.151
+Faces_170_h,Faces,Negative,1,3,emo1,within SF?,1,Old,A,Stimuli/Faces_170_h.jpg,1.496
+Animals_074_h,Animals,Negative,3,3,emo1,within SF?,1,Old,A,Stimuli/Animals_074_h.jpg,1.234
+Objects_188_v,Objects,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Objects_188_v.jpg,0.5
+Objects_130_h,Objects,Neutral,2,2,neu2,professional photo?,1,Old,A,Stimuli/Objects_130_h.jpg,1.151
+Objects_153_h,Objects,Negative,5,4,emo2,professional photo?,2,Old,A,Stimuli/Objects_153_h.jpg,5.089
+Faces_044_h,Faces,Neutral,5,2,neu2,professional photo?,2,Old,A,Stimuli/Faces_044_h.jpg,3.582
+Animals_062_h,Animals,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Animals_062_h.jpg,0.5
+Objects_313_h,Objects,Neutral,4,2,neu2,professional photo?,2,Old,A,Stimuli/Objects_313_h.jpg,3.961
+Faces_276_h,Faces,Neutral,3,1,neu1,within SF?,1,Old,A,Stimuli/Faces_276_h.jpg,0.798
+Faces_056_h,Faces,Neutral,3,1,neu1,within SF?,1,Old,A,Stimuli/Faces_056_h.jpg,0.834
+Animals_105_h,Animals,Neutral,1,1,neu1,within SF?,1,Old,A,Stimuli/Animals_105_h.jpg,1.997
+Objects_297_h,Objects,Neutral,5,2,neu2,professional photo?,1,Old,A,Stimuli/Objects_297_h.jpg,2.814
+Objects_149_h,Objects,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Objects_149_h.jpg,0.5
+Faces_128_h,Faces,Neutral,5,2,neu2,professional photo?,1,Old,A,Stimuli/Faces_128_h.jpg,2.922
+Objects_285_h,Objects,Negative,6,3,emo1,within SF?,1,Old,A,Stimuli/Objects_285_h.jpg,2.922
+Faces_343_h,Faces,Neutral,2,1,neu1,within SF?,2,Old,A,Stimuli/Faces_343_h.jpg,2.679
+Animals_124_v,Animals,Neutral,4,2,neu2,professional photo?,2,Old,A,Stimuli/Animals_124_v.jpg,0.559
+Objects_088_h,Objects,Negative,2,4,emo2,professional photo?,2,Old,A,Stimuli/Objects_088_h.jpg,3.745
+Objects_211_h,Objects,Neutral,1,1,neu1,within SF?,1,Old,A,Stimuli/Objects_211_h.jpg,3.961
+Faces_302_h,Faces,Negative,6,4,emo2,professional photo?,2,Old,A,Stimuli/Faces_302_h.jpg,5.089
+Objects_123_h,Objects,Negative,4,4,emo2,professional photo?,1,Old,A,Stimuli/Objects_123_h.jpg,2.922
+Objects_315_h,Objects,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Objects_315_h.jpg,0.5
+Objects_003_h,Objects,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Objects_003_h.jpg,0.5
+Faces_158_h,Faces,Negative,3,4,emo2,professional photo?,2,Old,A,Stimuli/Faces_158_h.jpg,0.977
+Faces_176_h,Faces,Negative,2,4,emo2,professional photo?,1,Old,A,Stimuli/Faces_176_h.jpg,3.961
+Faces_290_h,Faces,Negative,5,4,emo2,professional photo?,2,Old,A,Stimuli/Faces_290_h.jpg,1.234
+Objects_271_h,Objects,Neutral,6,2,neu2,professional photo?,1,Old,A,Stimuli/Objects_271_h.jpg,1.496
+Animals_204_h,Animals,Neutral,4,1,neu1,within SF?,1,Old,A,Stimuli/Animals_204_h.jpg,1.755
+Faces_003_h,Faces,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_003_h.jpg,0.5
+Animals_094_h,Animals,Neutral,4,2,neu2,professional photo?,2,Old,A,Stimuli/Animals_094_h.jpg,0.51
+Faces_049_h,Faces,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_049_h.jpg,0.5
+Faces_186_h,Faces,Neutral,6,1,neu1,within SF?,1,Old,A,Stimuli/Faces_186_h.jpg,3.961
+Objects_111_h,Objects,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Objects_111_h.jpg,0.5
+Objects_214_h,Objects,Neutral,3,2,neu2,professional photo?,2,Old,A,Stimuli/Objects_214_h.jpg,1.496
+Objects_095_h,Objects,Neutral,3,2,neu2,professional photo?,1,Old,A,Stimuli/Objects_095_h.jpg,0.51
+Animals_071_h,Animals,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Animals_071_h.jpg,0.5
+Animals_209_h,Animals,Neutral,5,1,neu1,within SF?,1,Old,A,Stimuli/Animals_209_h.jpg,2.087
+Objects_198_h,Objects,Neutral,5,1,neu1,within SF?,2,Old,A,Stimuli/Objects_198_h.jpg,0.623
+Faces_078_h,Faces,Neutral,3,2,neu2,professional photo?,1,Old,A,Stimuli/Faces_078_h.jpg,8.218
+Objects_129_h,Objects,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Objects_129_h.jpg,0.5
+Animals_078_h,Animals,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Animals_078_h.jpg,0.5
+Objects_303_h,Objects,Neutral,4,2,neu2,professional photo?,2,Old,A,Stimuli/Objects_303_h.jpg,0.589
+Faces_339_h,Faces,Neutral,4,2,neu2,professional photo?,1,Old,A,Stimuli/Faces_339_h.jpg,1.997
+Objects_090_h,Objects,Neutral,3,2,neu2,professional photo?,2,Old,A,Stimuli/Objects_090_h.jpg,5.478
+Faces_159_h,Faces,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_159_h.jpg,0.5
+Objects_283_h,Objects,Negative,1,4,emo2,professional photo?,1,Old,A,Stimuli/Objects_283_h.jpg,3.654
+Objects_120_h,Objects,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Objects_120_h.jpg,0.5
+Animals_093_h,Animals,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Animals_093_h.jpg,0.5
+Objects_154_h,Objects,Negative,6,4,emo2,professional photo?,1,Old,A,Stimuli/Objects_154_h.jpg,1.997
+Faces_163_h,Faces,Negative,4,4,emo2,professional photo?,1,Old,A,Stimuli/Faces_163_h.jpg,3.506
+Faces_293_h,Faces,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_293_h.jpg,0.5
+Objects_233_h,Objects,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Objects_233_h.jpg,0.5
+Faces_196_h,Faces,Neutral,1,2,neu2,professional photo?,1,Old,A,Stimuli/Faces_196_h.jpg,0.623
+Faces_226_h,Faces,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_226_h.jpg,0.5
+Faces_045_h,Faces,Neutral,4,1,neu1,within SF?,2,Old,A,Stimuli/Faces_045_h.jpg,3.582
+Faces_303_h,Faces,Negative,5,3,emo1,within SF?,2,Old,A,Stimuli/Faces_303_h.jpg,2.679
+Objects_127_h,Objects,Negative,1,3,emo1,within SF?,1,Old,A,Stimuli/Objects_127_h.jpg,1.151
+Faces_230_h,Faces,Neutral,2,1,neu1,within SF?,1,Old,A,Stimuli/Faces_230_h.jpg,2.087
+Objects_314_h,Objects,Neutral,4,1,neu1,within SF?,1,Old,A,Stimuli/Objects_314_h.jpg,1.922
+Faces_112_h,Faces,Neutral,3,2,neu2,professional photo?,2,Old,A,Stimuli/Faces_112_h.jpg,0.623
+Objects_328_h,Objects,Negative,1,4,emo2,professional photo?,1,Old,A,Stimuli/Objects_328_h.jpg,3.52
+Faces_016_h,Faces,Negative,2,3,emo1,within SF?,1,Old,A,Stimuli/Faces_016_h.jpg,0.51
+Faces_172_h,Faces,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_172_h.jpg,0.5
+Faces_209_h,Faces,Neutral,4,2,neu2,professional photo?,1,Old,A,Stimuli/Faces_209_h.jpg,2.087
+Objects_305_h,Objects,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Objects_305_h.jpg,0.5
+Objects_240_h,Objects,Neutral,2,1,neu1,within SF?,2,Old,A,Stimuli/Objects_240_h.jpg,4.855
+Faces_007_h,Faces,Negative,3,4,emo2,professional photo?,1,Old,A,Stimuli/Faces_007_h.jpg,1.755
+Objects_257_h,Objects,Neutral,6,1,neu1,within SF?,1,Old,A,Stimuli/Objects_257_h.jpg,1.262
+Objects_136_h,Objects,Negative,1,3,emo1,within SF?,2,Old,A,Stimuli/Objects_136_h.jpg,2.922
+Objects_166_h,Objects,Neutral,2,1,neu1,within SF?,1,Old,A,Stimuli/Objects_166_h.jpg,5.089
+Objects_157_h,Objects,Negative,3,4,emo2,professional photo?,2,Old,A,Stimuli/Objects_157_h.jpg,4.855
+Objects_204_h,Objects,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Objects_204_h.jpg,0.5
+Faces_210_h,Faces,Neutral,6,2,neu2,professional photo?,2,Old,A,Stimuli/Faces_210_h.jpg,3.582
+Objects_132_h,Objects,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Objects_132_h.jpg,0.5
+Faces_192_h,Faces,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_192_h.jpg,0.5
+Faces_271_h,Faces,Negative,4,3,emo1,within SF?,1,Old,A,Stimuli/Faces_271_h.jpg,2.679
+Faces_294_h,Faces,Negative,2,3,emo1,within SF?,2,Old,A,Stimuli/Faces_294_h.jpg,0.623
+Animals_060_h,Animals,Negative,3,3,emo1,within SF?,2,Old,A,Stimuli/Animals_060_h.jpg,5.258
+Faces_205_h,Faces,Neutral,6,2,neu2,professional photo?,2,Old,A,Stimuli/Faces_205_h.jpg,2.679
+Faces_058_h,Faces,Neutral,6,2,neu2,professional photo?,2,Old,A,Stimuli/Faces_058_h.jpg,4.855
+Faces_216_h,Faces,Neutral,2,2,neu2,professional photo?,2,Old,A,Stimuli/Faces_216_h.jpg,5.478
+Faces_288_h,Faces,Negative,1,4,emo2,professional photo?,2,Old,A,Stimuli/Faces_288_h.jpg,1.922
+Faces_370_h,Faces,Negative,5,3,emo1,within SF?,1,Old,A,Stimuli/Faces_370_h.jpg,1.262
+Objects_058_h,Objects,Neutral,5,2,neu2,professional photo?,1,Old,A,Stimuli/Objects_058_h.jpg,0.864
+Objects_229_h,Objects,Negative,4,3,emo1,within SF?,2,Old,A,Stimuli/Objects_229_h.jpg,0.623
+Objects_304_h,Objects,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Objects_304_h.jpg,0.5
+Faces_222_h,Faces,Neutral,5,1,neu1,within SF?,1,Old,A,Stimuli/Faces_222_h.jpg,0.977
+Faces_247_h,Faces,Neutral,2,1,neu1,within SF?,2,Old,A,Stimuli/Faces_247_h.jpg,0.798
+Faces_013_h,Faces,Negative,6,4,emo2,professional photo?,2,Old,A,Stimuli/Faces_013_h.jpg,0.834
+Faces_148_h,Faces,Negative,6,3,emo1,within SF?,2,Old,A,Stimuli/Faces_148_h.jpg,3.745
+Objects_082_h,Objects,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Objects_082_h.jpg,0.5
+Faces_291_h,Faces,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_291_h.jpg,0.5
+Objects_241_h,Objects,Neutral,6,1,neu1,within SF?,1,Old,A,Stimuli/Objects_241_h.jpg,1.755
+Objects_206_h,Objects,Negative,3,4,emo2,professional photo?,1,Old,A,Stimuli/Objects_206_h.jpg,0.824
+Objects_221_h,Objects,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Objects_221_h.jpg,0.5
+Animals_039_h,Animals,Negative,4,3,emo1,within SF?,1,Old,A,Stimuli/Animals_039_h.jpg,5.478
+Faces_274_h,Faces,Negative,4,4,emo2,professional photo?,2,Old,A,Stimuli/Faces_274_h.jpg,1.234
+Faces_218_h,Faces,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_218_h.jpg,0.5
+Objects_054_h,Objects,Neutral,1,2,neu2,professional photo?,1,Old,A,Stimuli/Objects_054_h.jpg,2.814
+Animals_217_h,Animals,Neutral,1,1,neu1,within SF?,2,Old,A,Stimuli/Animals_217_h.jpg,0.559
+Objects_210_h,Objects,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Objects_210_h.jpg,0.5
+Objects_207_h,Objects,Negative,6,3,emo1,within SF?,2,Old,A,Stimuli/Objects_207_h.jpg,1.234
+Objects_246_h,Objects,Neutral,5,2,neu2,professional photo?,2,Old,A,Stimuli/Objects_246_h.jpg,0.798
+Faces_368_h,Faces,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_368_h.jpg,0.5
+Objects_237_h,Objects,Neutral,3,2,neu2,professional photo?,2,Old,A,Stimuli/Objects_237_h.jpg,0.864
+Objects_121_v,Objects,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Objects_121_v.jpg,0.5
+Faces_182_h,Faces,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_182_h.jpg,0.5
+Animals_107_h,Animals,Neutral,5,1,neu1,within SF?,2,Old,A,Stimuli/Animals_107_h.jpg,5.258
+Faces_009_h,Faces,Negative,3,3,emo1,within SF?,1,Old,A,Stimuli/Faces_009_h.jpg,1.922
+Faces_214_h,Faces,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_214_h.jpg,0.5
+Objects_306_h,Objects,Neutral,4,1,neu1,within SF?,2,Old,A,Stimuli/Objects_306_h.jpg,0.977
+Animals_082_h,Animals,Neutral,3,1,neu1,within SF?,2,Old,A,Stimuli/Animals_082_h.jpg,1.997
+Animals_048_h,Animals,Negative,1,3,emo1,within SF?,2,Old,A,Stimuli/Animals_048_h.jpg,2.679
+Faces_041_h,Faces,Negative,4,4,emo2,professional photo?,2,Old,A,Stimuli/Faces_041_h.jpg,5.258
+Objects_145_h,Objects,Negative,3,4,emo2,professional photo?,2,Old,A,Stimuli/Objects_145_h.jpg,1.262
+Objects_276_h,Objects,Neutral,4,1,neu1,within SF?,2,Old,A,Stimuli/Objects_276_h.jpg,8.218
+Faces_220_h,Faces,Neutral,3,2,neu2,professional photo?,1,Old,A,Stimuli/Faces_220_h.jpg,2.814
+Faces_017_h,Faces,Negative,2,4,emo2,professional photo?,2,Old,A,Stimuli/Faces_017_h.jpg,2.814
+Animals_203_h,Animals,Neutral,2,2,neu2,professional photo?,1,Old,A,Stimuli/Animals_203_h.jpg,3.582
+Faces_028_h,Faces,Negative,4,3,emo1,within SF?,1,Old,A,Stimuli/Faces_028_h.jpg,2.814
+Animals_038_h,Animals,Negative,4,3,emo1,within SF?,2,Old,A,Stimuli/Animals_038_h.jpg,4.855
+Faces_027_h,Faces,Negative,1,3,emo1,within SF?,1,Old,A,Stimuli/Faces_027_h.jpg,4.855
+Objects_022_h,Objects,Negative,5,3,emo1,within SF?,2,Old,A,Stimuli/Objects_022_h.jpg,1.496
+Animals_121_h,Animals,Neutral,1,2,neu2,professional photo?,2,Old,A,Stimuli/Animals_121_h.jpg,0.51
+Faces_014_h,Faces,Negative,4,4,emo2,professional photo?,1,Old,A,Stimuli/Faces_014_h.jpg,1.262
+Faces_074_h,Faces,Neutral,4,2,neu2,professional photo?,1,Old,A,Stimuli/Faces_074_h.jpg,3.52
+Faces_048_h,Faces,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_048_h.jpg,0.5
+Objects_007_h,Objects,Negative,1,3,emo1,within SF?,2,Old,A,Stimuli/Objects_007_h.jpg,5.478
+Objects_143_h,Objects,Negative,6,3,emo1,within SF?,1,Old,A,Stimuli/Objects_143_h.jpg,5.258
+Objects_002_h,Objects,Negative,2,4,emo2,professional photo?,2,Old,A,Stimuli/Objects_002_h.jpg,8.218
+Objects_117_h,Objects,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Objects_117_h.jpg,0.5
+Objects_256_h,Objects,Neutral,3,2,neu2,professional photo?,1,Old,A,Stimuli/Objects_256_h.jpg,3.506
+Faces_224_h,Faces,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_224_h.jpg,0.5
+Objects_139_h,Objects,Negative,1,4,emo2,professional photo?,2,Old,A,Stimuli/Objects_139_h.jpg,0.798
+Faces_064_h,Faces,Neutral,4,1,neu1,within SF?,1,Old,A,Stimuli/Faces_064_h.jpg,0.864
+Objects_243_h,Objects,Negative,3,4,emo2,professional photo?,1,Old,A,Stimuli/Objects_243_h.jpg,0.559
+Objects_212_h,Objects,Negative,4,4,emo2,professional photo?,1,Old,A,Stimuli/Objects_212_h.jpg,0.834
+Faces_174_h,Faces,Negative,5,4,emo2,professional photo?,2,Old,A,Stimuli/Faces_174_h.jpg,4.855
+Faces_335_h,Faces,Neutral,1,2,neu2,professional photo?,1,Old,A,Stimuli/Faces_335_h.jpg,3.745
+Objects_235_h,Objects,Negative,4,3,emo1,within SF?,1,Old,A,Stimuli/Objects_235_h.jpg,3.745
+Objects_091_h,Objects,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Objects_091_h.jpg,0.5
+Faces_280_h,Faces,Negative,3,4,emo2,professional photo?,1,Old,A,Stimuli/Faces_280_h.jpg,2.922
+Faces_018_h,Faces,Negative,1,3,emo1,within SF?,1,Old,A,Stimuli/Faces_018_h.jpg,5.258
+Faces_057_h,Faces,Neutral,1,1,neu1,within SF?,2,Old,A,Stimuli/Faces_057_h.jpg,1.237
+Animals_103_h,Animals,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Animals_103_h.jpg,0.5
+Faces_273_h,Faces,Negative,4,4,emo2,professional photo?,2,Old,A,Stimuli/Faces_273_h.jpg,0.824
+Objects_265_h,Objects,Neutral,2,2,neu2,professional photo?,1,Old,A,Stimuli/Objects_265_h.jpg,5.258
+Faces_311_h,Faces,Neutral,5,1,neu1,within SF?,1,Old,A,Stimuli/Faces_311_h.jpg,8.218
+Objects_169_h,Objects,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Objects_169_h.jpg,0.5
+Objects_220_h,Objects,Neutral,5,2,neu2,professional photo?,2,Old,A,Stimuli/Objects_220_h.jpg,5.478
+Objects_302_h,Objects,Neutral,6,1,neu1,within SF?,2,Old,A,Stimuli/Objects_302_h.jpg,3.506
+Objects_232_h,Objects,Negative,4,3,emo1,within SF?,2,Old,A,Stimuli/Objects_232_h.jpg,1.237
+Animals_050_h,Animals,Negative,2,3,emo1,within SF?,2,Old,A,Stimuli/Animals_050_h.jpg,0.559
+Objects_013_h,Objects,Negative,6,3,emo1,within SF?,1,Old,A,Stimuli/Objects_013_h.jpg,0.824
+Objects_275_v,Objects,Negative,3,4,emo2,professional photo?,2,Old,A,Stimuli/Objects_275_v.jpg,0.589
+Faces_287_h,Faces,Negative,5,4,emo2,professional photo?,2,Old,A,Stimuli/Faces_287_h.jpg,0.51
+Faces_025_h,Faces,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_025_h.jpg,0.5
+Animals_218_h,Animals,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Animals_218_h.jpg,0.5
+Objects_099_h,Objects,Neutral,6,1,neu1,within SF?,1,Old,A,Stimuli/Objects_099_h.jpg,0.589
+Objects_006_h,Objects,Negative,2,3,emo1,within SF?,2,Old,A,Stimuli/Objects_006_h.jpg,1.234
+Faces_035_h,Faces,Negative,6,4,emo2,professional photo?,1,Old,A,Stimuli/Faces_035_h.jpg,0.864
+Objects_004_h,Objects,Negative,6,3,emo1,within SF?,2,Old,A,Stimuli/Objects_004_h.jpg,2.087
+Objects_310_h,Objects,Neutral,6,1,neu1,within SF?,2,Old,A,Stimuli/Objects_310_h.jpg,1.237
+Faces_336_h,Faces,Neutral,4,1,neu1,within SF?,2,Old,A,Stimuli/Faces_336_h.jpg,1.496
+Faces_207_h,Faces,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_207_h.jpg,0.5
+Animals_088_h,Animals,Neutral,NA,NA,NA,NA,NA,New,NA,Stimuli/Animals_088_h.jpg,0.5
+Objects_142_h,Objects,Negative,3,3,emo1,within SF?,1,Old,A,Stimuli/Objects_142_h.jpg,1.237
+Faces_296_h,Faces,Negative,5,3,emo1,within SF?,2,Old,A,Stimuli/Faces_296_h.jpg,1.237
+Animals_024_h,Animals,Negative,6,3,emo1,within SF?,2,Old,A,Stimuli/Animals_024_h.jpg,5.478
+Objects_135_h,Objects,Negative,4,3,emo1,within SF?,2,Old,A,Stimuli/Objects_135_h.jpg,3.654
+Faces_272_h,Faces,Negative,NA,NA,NA,NA,NA,New,NA,Stimuli/Faces_272_h.jpg,0.5
+Faces_194_h,Faces,Neutral,6,2,neu2,professional photo?,1,Old,A,Stimuli/Faces_194_h.jpg,8.218
+Faces_338_h,Faces,Neutral,1,1,neu1,within SF?,2,Old,A,Stimuli/Faces_338_h.jpg,8.218
