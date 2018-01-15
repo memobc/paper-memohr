@@ -2,7 +2,7 @@
 
 This repository includes scripts and data for the following paper:
 
-**Ritchey, M., Wang, S.-F., Yonelinas, A.P., & Ranganath C. (pre-print). Dissociable medial temporal pathways for encoding emotional item and context information**
+[**Ritchey, M., Wang, S.-F., Yonelinas, A.P., & Ranganath C. (pre-print). Dissociable medial temporal pathways for encoding emotional item and context information**](https://www.biorxiv.org/content/early/2018/01/15/248294)
 
 # Abstract
 
